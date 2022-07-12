@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">RepoSearchApp</string>
+    <string name="desc_img_serviceName">serviceName</string>
+
+    <!-- home fragment -->
+    <!-- tool bar image content description -->
+    <string name="desc_img_search">searchIcon</string>
+    <string name="desc_img_userProfile">userProfile</string>
+    <string name="text_tab_issue">Issue</string>
+    <string name="text_tab_noti">Notification</string>
+    <!-- tab item text -->
 </resources>
