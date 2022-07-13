@@ -8,5 +8,8 @@
     <string name="desc_img_userProfile">userProfile</string>
     <string name="text_tab_issue">Issue</string>
     <string name="text_tab_noti">Notification</string>
+    <string name="desc_home_filter">filterIcon</string>
+    <string name="text_filter">Filter</string>
+    <string name="text_option">Option</string>
     <!-- tab item text -->
 </resources>
