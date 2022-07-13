@@ -6,8 +6,8 @@ import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
-object RepoService {
-    private const val BASE_URL = "https://api.github.com/"
+object AccessService {
+    private const val BASE_URL = "https://github.com/"
     private val okHttpClient = OkHttpClient.Builder()
         .build()
 
@@ -17,5 +17,5 @@ object RepoService {
         .baseUrl(BASE_URL)
         .build()
 
-    val api: RepoApi = retrofit.create(RepoApi::class.java)
+    val api: AccessApi = retrofit.create(AccessApi::class.java)
 }
