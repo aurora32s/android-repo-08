@@ -25,7 +25,7 @@ data class Issue(
 ) {
     fun toModel() = IssueModel(
         id = id ?: 0,
-        createdAt = createdAt ?: "None",
+        createdAt = createdAt?.toDate()?.getDiffFromNow() ?: "None",
         repositoryTitle = repository.fullName ?: "UnKnown",
         issueNumber = number ?: 0,
         issueTitle = title ?: "UnKnown",

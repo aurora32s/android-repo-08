@@ -18,7 +18,7 @@ class IssueViewModel(
     val issueStateLiveData
         get() = _issueStateLiveData
 
-    private var issueType = IssueType.OPEN
+    private var issueType = IssueType.CLOSED
 
     fun fetchData() = viewModelScope.launch {
         try {
