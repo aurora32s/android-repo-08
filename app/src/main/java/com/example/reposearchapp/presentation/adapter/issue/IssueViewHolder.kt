@@ -8,6 +8,7 @@ class IssueViewHolder(
     private val binding: ItemIssueBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bindView(issue: IssueModel) = with(binding) {
+        // TODO data binding 으로
         tvRepoName.text = "${issue.repositoryTitle} #${issue.issueNumber}"
         tvIssueTitle.text = issue.issueTitle
         tvIssueDate.text = issue.createdAt

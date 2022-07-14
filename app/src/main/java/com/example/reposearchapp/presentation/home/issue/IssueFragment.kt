@@ -28,6 +28,7 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
 
     private fun initViews() = with(binding) {
         if (::issueListAdapter.isInitialized.not()) {
+            // TODO 이런 상황이 일어날 수 있는 경우 찾아보기
             issueListAdapter = IssueListAdapter()
             issueRecyclerView.adapter = issueListAdapter
         }
