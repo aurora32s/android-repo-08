@@ -1,4 +1,4 @@
-package com.example.reposearchapp.presentation.base.login
+package com.example.reposearchapp.presentation.login
 
 import android.content.Intent
 import android.net.Uri
