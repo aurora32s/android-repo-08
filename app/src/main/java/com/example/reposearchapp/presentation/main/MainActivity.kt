@@ -7,9 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import com.example.reposearchapp.R
+import com.example.reposearchapp.data.Token
 import com.example.reposearchapp.databinding.ActivityMainBinding
 import com.example.reposearchapp.presentation.home.HomeFragment
 import com.example.reposearchapp.presentation.login.LoginFragment
+import com.example.reposearchapp.presentation.search.SearchFragment
 import com.example.reposearchapp.util.Event
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +34,10 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             viewModel.accessToken.collect {
-                navigateToHomeFragment()
+                Token.token = it
+                supportFragmentManager.commit {
+                    replace(R.id.fragment_container_main, SearchFragment(), SearchFragment.TAG)
+                }
             }
         }
 
