@@ -11,5 +11,6 @@
     <string name="desc_home_filter">filterIcon</string>
     <string name="text_filter">Filter</string>
     <string name="text_option">Option</string>
+    <string name="desc_issue_state">desc_issue_state</string>
     <!-- tab item text -->
 </resources>

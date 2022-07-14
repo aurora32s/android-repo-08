@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp"
+    tools:background="@color/black">
+
+    <ImageView
+        android:id="@+id/img_issue_state"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/desc_issue_state"
+        android:src="@drawable/ic_issue_open"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_repo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="sam/whatsinmygithub"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toEndOf="@id/img_issue_state"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_issue_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="#2"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toEndOf="@id/tv_repo_name"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_issue_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="1일전"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_issue_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="프로젝트 요구사항 및 참고 자료"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/tv_repo_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_repo_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,8 +2,11 @@ package com.example.reposearchapp.data.entity.issue
 
 import com.example.reposearchapp.model.issue.IssueModel
 import com.example.reposearchapp.model.issue.IssueType
+import com.example.reposearchapp.util.getDiffFromNow
+import com.example.reposearchapp.util.toDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.util.*
 
 @Serializable
 data class Issue(

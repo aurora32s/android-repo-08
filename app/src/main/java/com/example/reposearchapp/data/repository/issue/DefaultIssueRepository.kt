@@ -26,7 +26,6 @@ class DefaultIssueRepository(
             gitApiService.getIssues(state = state)
         }
 
-        Log.d(IssueFragment.TAG, result.toString())
         if (result is Result.Success) {
             result.data
         } else {
