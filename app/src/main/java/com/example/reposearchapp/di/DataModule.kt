@@ -7,11 +7,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.reposearchapp.data.repository.AccessTokenRepository
 import com.example.reposearchapp.data.repository.AccessTokenRepository.Companion.ACCESS_TOKEN_DATA_STORE
+import com.example.reposearchapp.util.GithubLanguageColorUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -38,4 +40,16 @@ object RepositoryModule {
     ): AccessTokenRepository {
         return AccessTokenRepository(dataStore)
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object GithubLanguageColorUtilModule {
+
+    @Singleton
+    @Provides
+    fun provideGithubLanguageColorUtil(@DefaultDispatcher defaultDispatcher: CoroutineDispatcher): GithubLanguageColorUtil =
+        GithubLanguageColorUtil(
+            defaultDispatcher
+        )
 }
