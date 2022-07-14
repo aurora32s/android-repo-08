@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentNotificationBinding
+import com.example.reposearchapp.presentation.adapter.notification.NotificationAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
 
 class NotificationFragment :
@@ -12,6 +13,8 @@ class NotificationFragment :
 
     // TODO 의존성 주입으로 수정할 예정
     private val viewModel by lazy { NotificationViewModel() }
+
+    private lateinit var notificationAdapter: NotificationAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -22,7 +25,10 @@ class NotificationFragment :
     }
 
     private fun initViews() = with(binding) {
-
+        if (::notificationAdapter.isInitialized.not()) {
+            notificationAdapter = NotificationAdapter()
+            recyclerNotification.adapter = notificationAdapter
+        }
     }
 
     private fun bindViews() {
@@ -44,7 +50,7 @@ class NotificationFragment :
     }
 
     private fun handleSuccess(state: NotificationState.Success) {
-        Log.d(TAG, state.notifications.toString())
+        notificationAdapter.submitList(state.notifications)
     }
 
     private fun handleError(state: NotificationState.Error) {

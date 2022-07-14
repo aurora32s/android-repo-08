@@ -2,6 +2,8 @@ package com.example.reposearchapp.data.entity.notification
 
 import com.example.reposearchapp.model.notification.NotificationModel
 import com.example.reposearchapp.model.notification.NotificationReasonType
+import com.example.reposearchapp.util.getDiffFromNow
+import com.example.reposearchapp.util.toDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -27,6 +29,8 @@ data class Notification(
         title = subject.title ?: "UnKnown",
         type = subject.type ?: "none",
         number = subject.url?.substringAfterLast("/") ?: "0",
-        threadId = url?.substringAfterLast("/") ?: "0"
+        threadId = url?.substringAfterLast("/") ?: "0",
+        avatarUrl = repository.owner?.avatarUrl,
+        updatedAt = updatedAt?.toDate()?.getDiffFromNow() ?: "0"
     )
 }

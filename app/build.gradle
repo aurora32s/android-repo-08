@@ -60,4 +60,7 @@ dependencies {
 
     // support fragment kotlin
     implementation "androidx.fragment:fragment-ktx:1.5.0"
+
+    // glide
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
 }

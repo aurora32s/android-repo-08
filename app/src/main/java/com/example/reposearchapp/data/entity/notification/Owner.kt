@@ -4,9 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Repository(
-    @SerialName("full_name")
-    val fullName: String?,
-    @SerialName("owner")
-    val owner: Owner?,
+data class Owner(
+    @SerialName("avatar_url")
+    val avatarUrl: String?
 )
