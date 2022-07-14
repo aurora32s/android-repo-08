@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="login_label_marginTop">56dp</dimen>
+    <dimen name="login_button_marginBottom">80dp</dimen>
+</resources>
