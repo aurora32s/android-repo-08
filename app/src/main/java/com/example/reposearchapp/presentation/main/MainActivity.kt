@@ -2,6 +2,7 @@ package com.example.reposearchapp.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
@@ -44,7 +45,14 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.event.collect {
                 when (it) {
-                    is Event.ShowSnackBar -> {
+                    is Event.Success -> {
+                        Toast.makeText(
+                            this@MainActivity,
+                            getString(R.string.login_success),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is Event.Error -> {
                         showSnackBar(String.format(getString(R.string.login_fail, it.message)))
                     }
                 }

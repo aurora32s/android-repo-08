@@ -1,6 +1,5 @@
 package com.example.reposearchapp.data
 
-import androidx.annotation.ColorRes
 import kotlinx.serialization.Serializable
 
 @Serializable
