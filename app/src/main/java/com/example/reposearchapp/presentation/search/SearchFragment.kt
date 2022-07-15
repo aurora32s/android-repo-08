@@ -9,10 +9,6 @@ import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentSearchBinding
 import com.example.reposearchapp.presentation.adapter.RepoAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
@@ -38,7 +34,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText?.isNotBlank() == true) searchViewModel.search(newText)
+                    searchViewModel.search(newText ?: "")
 
                     return true
                 }

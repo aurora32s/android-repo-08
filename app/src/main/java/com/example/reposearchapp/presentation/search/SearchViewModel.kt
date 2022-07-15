@@ -17,7 +17,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val color: GithubLanguageColorUtil) : ViewModel() {
+class SearchViewModel @Inject constructor(private val color: GithubLanguageColorUtil) :
+    ViewModel() {
     private var searchJob: Job? = null
     var lastQuery = ""
 
@@ -32,6 +33,12 @@ class SearchViewModel @Inject constructor(private val color: GithubLanguageColor
 
     fun search(query: String) {
         searchJob?.cancel()
+
+        if (query.isBlank()) {
+            _repoList.value = listOf()
+
+            return
+        }
 
         lastQuery = query
         searchJob = viewModelScope.launch {
