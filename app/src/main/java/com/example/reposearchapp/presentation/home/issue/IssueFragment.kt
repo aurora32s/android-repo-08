@@ -1,14 +1,12 @@
 package com.example.reposearchapp.presentation.home.issue
 
 import android.os.Bundle
-import android.text.Layout
-import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentIssueBinding
+import com.example.reposearchapp.model.issue.IssueType
 import com.example.reposearchapp.presentation.adapter.issue.IssueListAdapter
+import com.example.reposearchapp.presentation.adapter.issue.IssueOptionAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
 
 class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue) {
@@ -17,6 +15,7 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
     private val viewModel by lazy { IssueViewModel() }
 
     private lateinit var issueListAdapter: IssueListAdapter
+    private lateinit var issueOptionListAdapter: IssueOptionAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,10 +31,21 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
             issueListAdapter = IssueListAdapter()
             issueRecyclerView.adapter = issueListAdapter
         }
+        if (::issueOptionListAdapter.isInitialized.not()) {
+            issueOptionListAdapter =
+                IssueOptionAdapter(requireContext(), IssueType.values().toList(), viewModel)
+            spinnerIssueOption.adapter = issueOptionListAdapter
+        }
     }
 
-    private fun bindViews() {
-
+    private fun bindViews() = with(binding) {
+        spinnerIssueOption.setOnItemClickListener { viewModel.changeIssueType(it) }
+        spinnerIssueOption.setOnFocusedListener { hasFocused ->
+            layoutIssueFilter.setBackgroundResource(
+                if (hasFocused) R.drawable.background_issue_filter_focused
+                else R.drawable.background_issue_filter_unfocused
+            )
+        }
     }
 
     private fun observeIssue() = viewModel.issueStateLiveData.observe(viewLifecycleOwner) {

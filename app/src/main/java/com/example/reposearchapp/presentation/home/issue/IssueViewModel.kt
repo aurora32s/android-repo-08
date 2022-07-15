@@ -22,7 +22,9 @@ class IssueViewModel(
     val issueStateLiveData: LiveData<IssueState>
         get() = _issueStateLiveData
 
-    private var issueType = IssueType.CLOSED
+    private var _issueType = IssueType.OPEN
+    val issueType
+        get() = _issueType
 
     fun fetchData() = viewModelScope.launch {
         try {
@@ -35,5 +37,13 @@ class IssueViewModel(
         } catch (exception: Exception) {
             _issueStateLiveData.value = IssueState.Error(R.string.error_issue_list)
         }
+    }
+
+    /**
+     * issue filtering option 변경
+     */
+    fun changeIssueType(issueTypeId: Long) {
+        _issueType = IssueType.getIssueTypeByOrdinary(issueTypeId)
+        fetchData()
     }
 }
