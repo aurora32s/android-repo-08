@@ -2,7 +2,6 @@ package com.example.reposearchapp.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
@@ -12,9 +11,9 @@ import com.example.reposearchapp.data.Token
 import com.example.reposearchapp.databinding.ActivityMainBinding
 import com.example.reposearchapp.presentation.home.HomeFragment
 import com.example.reposearchapp.presentation.login.LoginFragment
-import com.example.reposearchapp.presentation.search.SearchFragment
 import com.example.reposearchapp.util.Event
-import com.google.android.material.snackbar.Snackbar
+import com.example.reposearchapp.util.showSnackBar
+import com.example.reposearchapp.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,9 +35,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.accessToken.collect {
                 Token.token = it
-                supportFragmentManager.commit {
-                    replace(R.id.fragment_container_main, SearchFragment(), SearchFragment.TAG)
-                }
+                navigateToHomeFragment()
             }
         }
 
@@ -46,14 +43,13 @@ class MainActivity : AppCompatActivity() {
             viewModel.event.collect {
                 when (it) {
                     is Event.Success -> {
-                        Toast.makeText(
-                            this@MainActivity,
-                            getString(R.string.login_success),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showToast(getString(R.string.login_success))
                     }
                     is Event.Error -> {
-                        showSnackBar(String.format(getString(R.string.login_fail, it.message)))
+                        showSnackBar(
+                            binding.root,
+                            String.format(getString(R.string.login_fail, it.message))
+                        )
                     }
                 }
             }
@@ -64,10 +60,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.commit {
             replace(R.id.fragment_container_main, HomeFragment())
         }
-    }
-
-    private fun showSnackBar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onNewIntent(intent: Intent?) {
