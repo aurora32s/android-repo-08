@@ -9,18 +9,18 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 
 @BindingAdapter("circleImageUrl")
-fun setCircleImageFromImageUrl(imageView: ImageView, imageUrl: String?) {
+fun ImageView.setCircleImageFromImageUrl(imageUrl: String?) {
     imageUrl?.let {
-        Glide.with(imageView.context)
+        Glide.with(context)
             .load(imageUrl)
             .circleCrop()
-            .into(imageView)
+            .into(this)
     }
 }
 
 @SuppressLint("UseCompatTextViewDrawableApis")
 @BindingAdapter("tvDrawableTint")
-fun setTextViewDrawableTint(textView: TextView, color: String?) {
+fun TextView.setTextViewDrawableTint(color: String?) {
     val defaultColor = "#ffffff"
     val c = color ?: defaultColor
 
@@ -30,5 +30,5 @@ fun setTextViewDrawableTint(textView: TextView, color: String?) {
         Color.parseColor(defaultColor)
     }
 
-    textView.compoundDrawableTintList = ColorStateList.valueOf(colorCode)
+    this.compoundDrawableTintList = ColorStateList.valueOf(colorCode)
 }
