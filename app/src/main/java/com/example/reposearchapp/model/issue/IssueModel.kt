@@ -13,10 +13,10 @@ data class IssueModel(
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<IssueModel>() {
             override fun areItemsTheSame(oldItem: IssueModel, newItem: IssueModel): Boolean =
-                oldItem == newItem
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: IssueModel, newItem: IssueModel): Boolean =
-                oldItem.id == newItem.id
+                oldItem == newItem
         }
     }
 }

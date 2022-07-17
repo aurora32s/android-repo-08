@@ -20,13 +20,13 @@ data class NotificationModel(
                 oldItem: NotificationModel,
                 newItem: NotificationModel
             ): Boolean =
-                oldItem == newItem
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(
                 oldItem: NotificationModel,
                 newItem: NotificationModel
             ): Boolean =
-                oldItem.id == newItem.id
+                oldItem == newItem
         }
     }
 }
