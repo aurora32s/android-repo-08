@@ -1,17 +1,19 @@
 package com.example.reposearchapp.model.issue
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.example.reposearchapp.R
 
 enum class IssueType(
     val state: String,
-    val option: String,
+    @StringRes
+    val optionName: Int,
     @DrawableRes
     val iconResId: Int
 ) {
-    OPEN("open", "Open", R.drawable.ic_issue_open),
-    CLOSED("closed", "Closed", R.drawable.ic_issue_closed),
-    ALL("all", "All", R.drawable.ic_issue_open);
+    OPEN("open", R.string.name_open_option, R.drawable.ic_issue_open),
+    CLOSED("closed", R.string.name_closed_option, R.drawable.ic_issue_closed),
+    ALL("all", R.string.name_all_option, R.drawable.ic_issue_open);
 
     companion object {
         fun getIssueTypeByState(state: String?): IssueType =

@@ -19,4 +19,9 @@
     <string name="error_issue_list">이슈 정보를 받아오는 도중 문제가 발생했습니다.</string>
     <string name="error_notification_list">알림 정보를 받아오는 도중 문제가 발생했습니다.</string>
     <string name="desc_issue_type">SelectedIssueType</string>
+
+    <!-- issue filter option -->
+    <string name="name_open_option">Open</string>
+    <string name="name_closed_option">Closed</string>
+    <string name="name_all_option">All</string>
 </resources>

@@ -37,7 +37,7 @@ class IssueOptionAdapter(
         } ?: kotlin.run {
             ItemIssueOptionBinding.inflate(layoutInflater, parent, false).apply {
                 val issueType = getItem(position)
-                tvIssueType.text = issueType.option
+                tvIssueType.text = context.getString(issueType.optionName)
 
                 val isSelected = issueType == viewModel.issueType
                 tvIssueType.setTextColor(context.resources.getColor(if (isSelected) R.color.white else R.color.grey))
