@@ -39,12 +39,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="1일전"
             android:textColor="@color/grey"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_repo_name"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1일전" />
 
         <TextView
             android:id="@+id/tv_issue_title"
@@ -54,6 +54,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/white"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tv_repo_name"
             app:layout_constraintTop_toBottomOf="@id/tv_repo_name"
             tools:text="프로젝트 요구사항 및 참고 자료" />
