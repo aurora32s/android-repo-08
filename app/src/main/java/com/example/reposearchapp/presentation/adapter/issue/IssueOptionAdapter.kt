@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.ItemIssueOptionBinding
@@ -40,7 +41,12 @@ class IssueOptionAdapter(
                 tvIssueType.text = context.getString(issueType.optionName)
 
                 val isSelected = issueType == viewModel.issueType
-                tvIssueType.setTextColor(context.resources.getColor(if (isSelected) R.color.white else R.color.grey))
+                tvIssueType.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        if (isSelected) R.color.white else R.color.grey
+                    )
+                )
                 imgCheckIcon.isVisible = isSelected
             }.root
         }

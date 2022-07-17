@@ -1,5 +1,6 @@
 package com.example.reposearchapp.model.issue
 
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.example.reposearchapp.R
