@@ -26,16 +26,14 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
     }
 
     private fun initViews() = with(binding) {
-        if (::issueListAdapter.isInitialized.not()) {
-            // TODO 이런 상황이 일어날 수 있는 경우 찾아보기
-            issueListAdapter = IssueListAdapter()
-            issueRecyclerView.adapter = issueListAdapter
-        }
-        if (::issueOptionListAdapter.isInitialized.not()) {
-            issueOptionListAdapter =
-                IssueOptionAdapter(requireContext(), IssueType.values().toList(), viewModel)
-            spinnerIssueOption.adapter = issueOptionListAdapter
-        }
+        // 이슈 리스트 초기화
+        issueListAdapter = IssueListAdapter()
+        issueRecyclerView.adapter = issueListAdapter
+
+        // 필터를 위한 옵션 리스트 초기화
+        issueOptionListAdapter =
+            IssueOptionAdapter(requireContext(), IssueType.values().toList(), viewModel)
+        spinnerIssueOption.adapter = issueOptionListAdapter
     }
 
     private fun bindViews() = with(binding) {
