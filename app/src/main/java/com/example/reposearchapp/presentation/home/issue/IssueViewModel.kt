@@ -22,9 +22,8 @@ class IssueViewModel(
     val issueStateLiveData: LiveData<IssueState>
         get() = _issueStateLiveData
 
-    private var _issueType = IssueType.OPEN
-    val issueType
-        get() = _issueType
+    var issueType = IssueType.OPEN
+        private set
 
     fun fetchData() = viewModelScope.launch {
         try {
@@ -43,7 +42,7 @@ class IssueViewModel(
      * issue filtering option 변경
      */
     fun changeIssueType(issueTypeId: Long) {
-        _issueType = IssueType.getIssueTypeByOrdinary(issueTypeId)
+        issueType = IssueType.getIssueTypeByOrdinary(issueTypeId)
         fetchData()
     }
 }
