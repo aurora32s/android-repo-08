@@ -25,4 +25,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
             startActivity(intent)
         }
     }
+
+    companion object {
+        const val TAG = "LoginFragment"
+    }
 }

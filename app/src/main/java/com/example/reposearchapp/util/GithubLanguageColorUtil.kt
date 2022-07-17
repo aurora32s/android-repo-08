@@ -6,11 +6,10 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 
-
 class GithubLanguageColorUtil(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) {
-    val colorJson = "{\n" +
+    private val colorJson = "{\n" +
             "    \"ABAP\": \"#E8274B\", \n" +
             "    \"ActionScript\": \"#882B0F\", \n" +
             "    \"Ada\": \"#02f88c\", \n" +
@@ -212,6 +211,7 @@ class GithubLanguageColorUtil(
             "}"
 
     var colorMap: Map<String, String>? = null
+        private set
 
     suspend fun parseJson() {
         withContext(defaultDispatcher) {
@@ -219,7 +219,9 @@ class GithubLanguageColorUtil(
                 .mapValues {
                     it.value.toString().replace(
                         "\"",
-                        "") }
+                        ""
+                    )
+                }
         }
     }
 }

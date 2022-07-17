@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.reposearchapp.data.repository.AccessTokenRepository
 import com.example.reposearchapp.data.repository.AccessTokenRepository.Companion.ACCESS_TOKEN_DATA_STORE
+import com.example.reposearchapp.data.repository.SearchRepository
 import com.example.reposearchapp.util.GithubLanguageColorUtil
 import dagger.Module
 import dagger.Provides
@@ -39,6 +40,14 @@ object RepositoryModule {
         dataStore: DataStore<Preferences>
     ): AccessTokenRepository {
         return AccessTokenRepository(dataStore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSearchRepository(
+        githubLanguageColorUtil: GithubLanguageColorUtil
+    ): SearchRepository {
+        return SearchRepository(githubLanguageColorUtil)
     }
 }
 
