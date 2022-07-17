@@ -33,7 +33,7 @@ class AccessTokenRepository @Inject constructor(
     }
 
     suspend fun getToken(code: String): Event {
-        when (val result = safeApiCall {
+        val result = safeApiCall {
             AccessService.api.requestAccessToken(
                 AccessTokenRequest(
                     clientId = BuildConfig.GITHUB_CLIENT_ID,
@@ -41,13 +41,15 @@ class AccessTokenRepository @Inject constructor(
                     code = code
                 )
             )
-        }) {
+        }
+
+        return when (result) {
             is Result.Success -> {
                 saveToken(result.data.accessToken)
-                return Event.Success("")
+                Event.Success("")
             }
             is Result.Error -> {
-                return Event.Error(result.exception)
+                Event.Error(result.exception)
             }
         }
     }
