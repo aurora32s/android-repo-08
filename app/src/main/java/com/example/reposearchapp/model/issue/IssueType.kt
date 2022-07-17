@@ -1,10 +1,12 @@
 package com.example.reposearchapp.model.issue
 
+import androidx.annotation.DrawableRes
 import com.example.reposearchapp.R
 
 enum class IssueType(
     val state: String,
     val option: String,
+    @DrawableRes
     val iconResId: Int
 ) {
     OPEN("open", "Open", R.drawable.ic_issue_open),
