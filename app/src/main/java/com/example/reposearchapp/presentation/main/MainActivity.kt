@@ -28,14 +28,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.commit {
-            replace(R.id.fragment_container_main, LoginFragment())
-        }
-
-        lifecycleScope.launch {
-            viewModel.accessToken.collect {
-                Token.token = it
-                navigateToHomeFragment()
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                replace(R.id.fragment_container_main, LoginFragment(), LoginFragment.TAG)
             }
         }
 
@@ -44,6 +39,8 @@ class MainActivity : AppCompatActivity() {
                 when (it) {
                     is Event.Success -> {
                         showToast(getString(R.string.login_success))
+                        Token.token = it.message
+                        navigateToHomeFragment()
                     }
                     is Event.Error -> {
                         showSnackBar(
@@ -58,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToHomeFragment() {
         supportFragmentManager.commit {
-            replace(R.id.fragment_container_main, HomeFragment())
+            replace(R.id.fragment_container_main, HomeFragment(), HomeFragment.TAG)
         }
     }
 
