@@ -46,7 +46,7 @@ class AccessTokenRepository @Inject constructor(
         return when (result) {
             is Result.Success -> {
                 saveToken(result.data.accessToken)
-                Event.Success("")
+                Event.Success(result.data.accessToken)
             }
             is Result.Error -> {
                 Event.Error(result.exception)

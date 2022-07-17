@@ -13,16 +13,16 @@ data class Item(
     val owner: Owner,
     @SerialName("stargazers_count")
     val stargazersCount: Int
-)
-
-fun Item.toModel(color: String?): RepoItemModel =
-    RepoItemModel(
-        description = description,
-        id = id,
-        language = language,
-        languageColor = color,
-        name = name,
-        ownerName = owner.login,
-        ownerImgUrl = owner.avatarUrl,
-        stargazersCount = stargazersCount
-    )
+) {
+    fun toModel(color: String?): RepoItemModel =
+        RepoItemModel(
+            description = description,
+            id = id,
+            language = language,
+            languageColor = color,
+            name = name,
+            ownerName = owner.login,
+            ownerImgUrl = owner.avatarUrl,
+            stargazersCount = stargazersCount
+        )
+}
