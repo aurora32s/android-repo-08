@@ -21,15 +21,10 @@ class DefaultIssueRepository(
      * state 에 따른 issues 요청
      * state : open, closed, all
      */
-    override suspend fun getIssues(state: String): List<Issue> = withContext(ioDispatcher) {
-        val result = safeApiCall {
-            gitApiService.getIssues(state = state)
-        }
-
-        if (result is Result.Success) {
-            result.data
-        } else {
-            throw Exception()
+    override suspend fun getIssues(state: String): List<Issue> {
+        return when (val result = safeApiCall { gitApiService.getIssues(state = state) }) {
+            is Result.Error -> throw Exception(result.exception)
+            is Result.Success -> result.data
         }
     }
 

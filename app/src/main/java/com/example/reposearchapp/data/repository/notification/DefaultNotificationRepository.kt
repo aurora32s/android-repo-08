@@ -18,13 +18,10 @@ class DefaultNotificationRepository(
     /**
      * 특정 사용자의 알림 데이터 요청
      */
-    override suspend fun getNotifications(): List<Notification> = withContext(ioDispatcher) {
-        val result = safeApiCall { gitApiService.getNotifications() }
-
-        if (result is Result.Success) {
-            result.data
-        } else {
-            throw Exception()
+    override suspend fun getNotifications(): List<Notification> {
+        return when (val result = safeApiCall { gitApiService.getNotifications() }) {
+            is Result.Error -> throw Exception(result.exception)
+            is Result.Success -> result.data
         }
     }
 }
