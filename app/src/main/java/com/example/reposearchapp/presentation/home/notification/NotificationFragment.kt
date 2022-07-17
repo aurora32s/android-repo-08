@@ -3,6 +3,7 @@ package com.example.reposearchapp.presentation.home.notification
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentNotificationBinding
 import com.example.reposearchapp.presentation.adapter.notification.NotificationAdapter
@@ -12,7 +13,7 @@ class NotificationFragment :
     BaseFragment<FragmentNotificationBinding>(R.layout.fragment_notification) {
 
     // TODO 의존성 주입으로 수정할 예정
-    private val viewModel by lazy { NotificationViewModel() }
+    private val viewModel: NotificationViewModel by viewModels()
 
     private lateinit var notificationAdapter: NotificationAdapter
 

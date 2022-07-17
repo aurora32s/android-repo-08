@@ -2,6 +2,7 @@ package com.example.reposearchapp.presentation.home.issue
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentIssueBinding
 import com.example.reposearchapp.model.issue.IssueType
@@ -12,7 +13,7 @@ import com.example.reposearchapp.presentation.base.BaseFragment
 class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue) {
 
     // TODO 의존성 주입으로 수정할 예정
-    private val viewModel by lazy { IssueViewModel() }
+    private val viewModel: IssueViewModel by viewModels()
 
     private lateinit var issueListAdapter: IssueListAdapter
     private lateinit var issueOptionListAdapter: IssueOptionAdapter
