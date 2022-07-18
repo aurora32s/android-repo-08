@@ -72,8 +72,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 searchViewModel.pagingDataFlow.collectLatest {
-                    println(it.toString())
-                    binding.rvRepo.scrollToPosition(0)
                     adapter.submitData(it)
                 }
             }
