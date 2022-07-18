@@ -1,12 +1,11 @@
 package com.example.reposearchapp.presentation.home
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import com.example.reposearchapp.R
 import com.example.reposearchapp.data.entity.issue.Issue
@@ -16,11 +15,16 @@ import com.example.reposearchapp.presentation.adapter.home.HomeViewPagerAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
 import com.example.reposearchapp.presentation.home.issue.IssueFragment
 import com.example.reposearchapp.presentation.home.notification.NotificationFragment
+import com.example.reposearchapp.presentation.profile.ProfileFragment
+import com.example.reposearchapp.presentation.profile.ProfileUiState
+import com.example.reposearchapp.presentation.profile.ProfileViewModel
 import com.example.reposearchapp.presentation.search.SearchFragment
+import com.example.reposearchapp.util.setCircleImageFromImageUrl
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+    private val profileViewModel by activityViewModels<ProfileViewModel>()
 
     // tab 에 보여지는
     private val tabTitleList = listOf(R.string.text_tab_issue, R.string.text_tab_noti)
@@ -30,6 +34,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         bindViews()
         initViews()
+        observeState()
     }
 
     private fun initViews() {
@@ -49,6 +54,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = requireContext().getString(tabTitleList[position])
         }.attach()
+        // 프로필 이미지 클릭
+        ivProfile.setOnClickListener {
+            navigateToProfileFragment()
+        }
+
+    }
+
+    private fun observeState() {
+        profileViewModel.profileUiState.observe(viewLifecycleOwner) {
+            when (it) {
+                is ProfileUiState.Loading -> {
+
+                is ProfileUiState.Success -> {
+                }
+                    binding.ivProfile.setCircleImageFromImageUrl(it.user.avatarUrl)
+                is ProfileUiState.Error -> {
+                }
+                }
+            }
+        }
+    }
+    
+    private fun navigateToProfileFragment() {
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            addToBackStack(SearchFragment.TAG)
+            replace(R.id.fragment_container_main, ProfileFragment(), ProfileFragment.TAG)
+        }
     }
 
     private fun navigateToSearchFragment() {
@@ -60,15 +93,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 ?: replace(R.id.fragment_container_main, SearchFragment(), SearchFragment.TAG)
         }
     }
-
-//    private enum class TabType(
-//        @StringRes
-//        val tabName: Int,
-//        val fragment: Fragment
-//    ) {
-//        ISSUE(R.string.text_tab_issue, IssueFragment.newInstance()),
-//        NOTIFICATION(R.string.text_tab_noti, NotificationFragment.newInstance())
-//    }
 
     companion object {
         const val TAG = "HomeFragment"

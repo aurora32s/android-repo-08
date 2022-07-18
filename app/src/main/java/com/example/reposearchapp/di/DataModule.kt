@@ -35,6 +35,10 @@ object RepositoryModule {
     ): SearchRepository {
         return SearchRepository(githubLanguageColorUtil, githubApi)
     }
+
+    @Singleton
+    @Provides
+    fun provideProfileRepository() = ProfileRepository()
 }
 
 @Module

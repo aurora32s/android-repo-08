@@ -27,6 +27,7 @@
                 android:src="@drawable/ic_servicename" />
 
             <ImageView
+                android:id="@+id/iv_profile"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="end"

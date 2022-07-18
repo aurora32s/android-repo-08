@@ -65,4 +65,16 @@
         <!-- Icon Color -->
         <item name="android:tint">@color/white</item>
     </style>
+
+    <style name="displayname">
+
+        <item name="android:textSize">
+            18sp
+        </item>
+
+        <item name="android:textColor">
+            #FFFFFF
+        </item>
+
+    </style>
 </resources>
