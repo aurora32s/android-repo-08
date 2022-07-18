@@ -11,10 +11,11 @@ suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): Result<T> {
     return try {
         val response: Response<T> = call.invoke()
         val responseBody = response.body()
+
         if (responseBody != null && response.isSuccessful) {
             Result.Success(responseBody)
         } else {
-            Result.Error(response.message() ?: "Something goes wrong")
+            Result.Error("${response.message()} ${response.code()}")
         }
     } catch (e: Exception) {
         Result.Error(e.message ?: "Internet error runs")

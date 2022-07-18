@@ -56,12 +56,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         // fragment show
-        findFragment?.let {
+        if (findFragment !== null) {
             childFragmentManager.commit(true) {
                 setReorderingAllowed(true)
-                show(it)
+                show(findFragment)
             }
-        } ?: kotlin.run {
+        } else {
             childFragmentManager.commit(allowStateLoss = true) {
                 setReorderingAllowed(true)
                 add(R.id.fragmentContainer, fragment, tag)

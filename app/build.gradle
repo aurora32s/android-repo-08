@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.21'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -9,10 +11,13 @@ android {
 
     defaultConfig {
         applicationId "com.example.reposearchapp"
-        minSdk 21
+        minSdk 23
         targetSdk 32
         versionCode 1
         versionName "1.0"
+
+        buildConfigField("String", "GITHUB_CLIENT_ID", GITHUB_CLIENT_ID)
+        buildConfigField("String", "GITHUB_CLIENT_SECRET", GITHUB_CLIENT_SECRET)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -63,4 +68,10 @@ dependencies {
 
     // glide
     implementation 'com.github.bumptech.glide:glide:4.13.2'
+
+    implementation "androidx.datastore:datastore-preferences:$datastore_version"
+    implementation "androidx.datastore:datastore-core:$datastore_version"
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 }
