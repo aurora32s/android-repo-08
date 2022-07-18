@@ -1,5 +1,6 @@
 package com.example.reposearchapp.di
 
+import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
@@ -57,8 +58,12 @@ object GithubLanguageColorUtilModule {
 
     @Singleton
     @Provides
-    fun provideGithubLanguageColorUtil(@DefaultDispatcher defaultDispatcher: CoroutineDispatcher): GithubLanguageColorUtil =
+    fun provideGithubLanguageColorUtil(
+        @ApplicationContext application: Context,
+        @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+    ): GithubLanguageColorUtil =
         GithubLanguageColorUtil(
+            application,
             defaultDispatcher
         )
 }
