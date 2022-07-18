@@ -13,6 +13,7 @@ import com.example.reposearchapp.model.home.TabType
 import com.example.reposearchapp.presentation.base.BaseFragment
 import com.example.reposearchapp.presentation.home.issue.IssueFragment
 import com.example.reposearchapp.presentation.home.notification.NotificationFragment
+import com.example.reposearchapp.presentation.search.SearchFragment
 import com.google.android.material.tabs.TabLayout
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -26,6 +27,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun initViews() {
         showFragment(IssueFragment.newInstance(), IssueFragment.TAG)
+        binding.btnSearch.setOnClickListener {
+            navigateToSearchFragment()
+        }
     }
 
     private fun bindViews() = with(binding) {
@@ -67,5 +71,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 add(R.id.fragmentContainer, fragment, tag)
             }
         }
+    }
+    
+    private fun navigateToSearchFragment() {
+        val f = parentFragmentManager.findFragmentByTag(SearchFragment.TAG)
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            addToBackStack(SearchFragment.TAG)
+            f?.let { replace(R.id.fragment_container_main, it, SearchFragment.TAG) }
+                ?: replace(R.id.fragment_container_main, SearchFragment(), SearchFragment.TAG)
+        }
+    }
+
+    companion object {
+        const val TAG = "HomeFragment"
     }
 }

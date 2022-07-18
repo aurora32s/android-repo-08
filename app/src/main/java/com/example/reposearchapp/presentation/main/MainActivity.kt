@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import com.example.reposearchapp.R
+import com.example.reposearchapp.data.Token
 import com.example.reposearchapp.databinding.ActivityMainBinding
 import com.example.reposearchapp.presentation.home.HomeFragment
 import com.example.reposearchapp.presentation.login.LoginFragment
 import com.example.reposearchapp.util.Event
-import com.google.android.material.snackbar.Snackbar
+import com.example.reposearchapp.util.showSnackBar
+import com.example.reposearchapp.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -26,21 +28,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.commit {
-            replace(R.id.fragment_container_main, LoginFragment())
-        }
-
-        lifecycleScope.launch {
-            viewModel.accessToken.collect {
-                navigateToHomeFragment()
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                replace(R.id.fragment_container_main, LoginFragment(), LoginFragment.TAG)
             }
         }
 
         lifecycleScope.launch {
             viewModel.event.collect {
                 when (it) {
-                    is Event.ShowSnackBar -> {
-                        showSnackBar(String.format(getString(R.string.login_fail, it.message)))
+                    is Event.Success -> {
+                        showToast(getString(R.string.login_success))
+                        Token.token = it.message
+                        navigateToHomeFragment()
+                    }
+                    is Event.Error -> {
+                        showSnackBar(
+                            binding.root,
+                            String.format(getString(R.string.login_fail, it.message))
+                        )
                     }
                 }
             }
@@ -49,12 +55,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToHomeFragment() {
         supportFragmentManager.commit {
-            replace(R.id.fragment_container_main, HomeFragment())
+            replace(R.id.fragment_container_main, HomeFragment(), HomeFragment.TAG)
         }
-    }
-
-    private fun showSnackBar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onNewIntent(intent: Intent?) {
