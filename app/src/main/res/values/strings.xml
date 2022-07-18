@@ -1,5 +1,29 @@
 <resources>
     <string name="app_name">RepoSearchApp</string>
+    <string name="desc_img_serviceName">serviceName</string>
+
+    <!-- home fragment -->
+    <!-- tool bar image content description -->
+    <string name="desc_img_search">searchIcon</string>
+    <string name="desc_img_userProfile">userProfile</string>
+    <string name="desc_home_filter">filterIcon</string>
+    <string name="text_filter">Filter</string>
+    <string name="text_option">Option</string>
+    <string name="desc_issue_state">desc_issue_state</string>
+
+    <!-- tab item text -->
+    <string name="text_tab_issue">Issue</string>
+    <string name="text_tab_noti">Notification</string>
+
+    <!-- error msg -->
+    <string name="error_issue_list">이슈 정보를 받아오는 도중 문제가 발생했습니다.</string>
+    <string name="error_notification_list">알림 정보를 받아오는 도중 문제가 발생했습니다.</string>
+    <string name="desc_issue_type">SelectedIssueType</string>
+
+    <!-- issue filter option -->
+    <string name="name_open_option">Open</string>
+    <string name="name_closed_option">Closed</string>
+    <string name="name_all_option">All</string>
 
     <string name="login_label">What In\nMy GitHub</string>
     <string name="login_button_label">Github 로그인</string>
