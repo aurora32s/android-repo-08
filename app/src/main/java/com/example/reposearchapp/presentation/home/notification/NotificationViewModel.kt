@@ -38,15 +38,19 @@ class NotificationViewModel(
 
     fun readNotification(notificationModel: NotificationModel) = viewModelScope.launch {
         try {
-            when (_notificationStateLiveData.value) {
+            when (val state = _notificationStateLiveData.value) {
                 is NotificationState.Success -> {
                     val threadId = notificationModel.threadId
                     notificationRepository.readNotificationByThreadId(threadId)
+                    _notificationStateLiveData.value = NotificationState.Success(
+                        state.notifications.filter { it.id != notificationModel.id }
+                    )
                 }
                 else -> {}
             }
         } catch (exception: Exception) {
-            Log.d("Read", exception.toString())
+            _notificationStateLiveData.value =
+                NotificationState.ErrorNotificationRead(R.string.error_notification_read)
         }
     }
 }
