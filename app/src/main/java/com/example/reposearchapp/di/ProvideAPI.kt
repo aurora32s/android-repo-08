@@ -35,7 +35,7 @@ fun buildOkhttpClient(): OkHttpClient {
     return OkHttpClient.Builder()
         .addInterceptor {
             val request = it.request().newBuilder()
-                .addHeader("Authorization", "bearer ${Token.token}")
+                .addHeader("Authorization", "bearer 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")
                 .addHeader("Accept", "application/json")
                 .build()
             it.proceed(request)
