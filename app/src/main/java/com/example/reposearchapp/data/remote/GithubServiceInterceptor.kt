@@ -9,11 +9,11 @@ class GithubServiceInterceptor @Inject constructor(
     private val accessTokenRepository: AccessTokenRepository
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        accessTokenRepository.getToken()
+        accessTokenRepository.requestToken()
         val request = chain.request().newBuilder()
-            .addHeader("Authorization", "Bearer ${accessTokenRepository.token}")
+            .addHeader("Accept", "application/json")
+            .addHeader("Authorization", "Bearer ${accessTokenRepository.accessToken}")
             .build()
-        println(accessTokenRepository.token)
         return chain.proceed(request)
     }
 }

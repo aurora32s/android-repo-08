@@ -10,9 +10,10 @@ import com.example.reposearchapp.util.GithubLanguageColorUtil
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
-class SearchRepository @Inject constructor(private val color: GithubLanguageColorUtil) {
-    @Inject
-    lateinit var githubApi: GithubApi
+class SearchRepository @Inject constructor(
+    private val color: GithubLanguageColorUtil,
+    private val githubApi: GithubApi
+) {
 
     private val _repoList = MutableLiveData<List<RepoItemModel>>()
     val repoList: LiveData<List<RepoItemModel>> get() = _repoList
@@ -31,12 +32,10 @@ class SearchRepository @Inject constructor(private val color: GithubLanguageColo
 
         when (val result = safeApiCall { githubApi.getRepos(query) }) {
             is Result.Success -> {
-                println(result.data)
                 _repoList.value =
                     result.data.items.map { it.toModel(color.colorMap?.get(it.language)) }
             }
             is Result.Error -> {
-                println(result.exception)
                 _repoList.value = listOf()
             }
         }
