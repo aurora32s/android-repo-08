@@ -4,13 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.reposearchapp.data.RepoItemModel
 import com.example.reposearchapp.data.Result
-import com.example.reposearchapp.data.remote.GithubService
+import com.example.reposearchapp.data.remote.GithubApi
 import com.example.reposearchapp.data.safeApiCall
 import com.example.reposearchapp.util.GithubLanguageColorUtil
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class SearchRepository @Inject constructor(private val color: GithubLanguageColorUtil) {
+    @Inject
+    lateinit var githubApi: GithubApi
+
     private val _repoList = MutableLiveData<List<RepoItemModel>>()
     val repoList: LiveData<List<RepoItemModel>> get() = _repoList
 
@@ -26,12 +29,14 @@ class SearchRepository @Inject constructor(private val color: GithubLanguageColo
 
         delay(DEBOUNCE_TIME)
 
-        when (val result = safeApiCall { GithubService.api.getRepos(query) }) {
+        when (val result = safeApiCall { githubApi.getRepos(query) }) {
             is Result.Success -> {
+                println(result.data)
                 _repoList.value =
                     result.data.items.map { it.toModel(color.colorMap?.get(it.language)) }
             }
             is Result.Error -> {
+                println(result.exception)
                 _repoList.value = listOf()
             }
         }

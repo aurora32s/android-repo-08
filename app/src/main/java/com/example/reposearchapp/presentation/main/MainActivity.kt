@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import com.example.reposearchapp.R
-import com.example.reposearchapp.data.Token
+import com.example.reposearchapp.data.remote.GithubApi
 import com.example.reposearchapp.databinding.ActivityMainBinding
 import com.example.reposearchapp.presentation.home.HomeFragment
 import com.example.reposearchapp.presentation.login.LoginFragment
@@ -16,6 +16,7 @@ import com.example.reposearchapp.util.showSnackBar
 import com.example.reposearchapp.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -39,7 +40,6 @@ class MainActivity : AppCompatActivity() {
                 when (it) {
                     is Event.Success -> {
                         showToast(getString(R.string.login_success))
-                        Token.token = it.message
                         navigateToHomeFragment()
                     }
                     is Event.Error -> {

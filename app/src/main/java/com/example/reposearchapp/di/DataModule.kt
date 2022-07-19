@@ -1,35 +1,24 @@
 package com.example.reposearchapp.di
 
-import android.app.Application
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStoreFile
+import com.example.reposearchapp.data.remote.GithubApi
+import com.example.reposearchapp.data.remote.GithubServiceInterceptor
 import com.example.reposearchapp.data.repository.AccessTokenRepository
-import com.example.reposearchapp.data.repository.AccessTokenRepository.Companion.ACCESS_TOKEN_DATA_STORE
 import com.example.reposearchapp.data.repository.SearchRepository
 import com.example.reposearchapp.util.GithubLanguageColorUtil
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
 import javax.inject.Singleton
-
-@InstallIn(SingletonComponent::class)
-@Module
-object DataStoreModule {
-
-    @Singleton
-    @Provides
-    fun provideAccessTokenPreferencesDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create(
-            produceFile = { appContext.preferencesDataStoreFile(ACCESS_TOKEN_DATA_STORE) }
-        )
-    }
-}
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -38,9 +27,9 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideAccessTokenRepository(
-        dataStore: DataStore<Preferences>
+        @ApplicationContext application: Context
     ): AccessTokenRepository {
-        return AccessTokenRepository(dataStore)
+        return AccessTokenRepository(application)
     }
 
     @Singleton
@@ -66,4 +55,49 @@ object GithubLanguageColorUtilModule {
             application,
             defaultDispatcher
         )
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object InterceptorModule {
+
+    @Provides
+    fun provideInterceptor(
+        accessTokenRepository: AccessTokenRepository
+    ): GithubServiceInterceptor {
+        return GithubServiceInterceptor(accessTokenRepository)
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object OkHttpModule {
+
+    @Provides
+    fun provideInterceptorOkHttpClient(
+        interceptor: GithubServiceInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+    }
+}
+
+@Module
+@InstallIn(ActivityComponent::class)
+object NetworkModule {
+
+    @Provides
+    fun provideGithubService(
+        okHttpClient: OkHttpClient
+    ): GithubApi {
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .addConverterFactory(Json {
+                ignoreUnknownKeys = true
+            }.asConverterFactory(MediaType.parse("application/json")!!))
+            .baseUrl("https://api.github.com")
+            .build()
+            .create(GithubApi::class.java)
+    }
 }
