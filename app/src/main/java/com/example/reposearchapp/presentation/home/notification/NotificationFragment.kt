@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentNotificationBinding
 import com.example.reposearchapp.presentation.adapter.notification.NotificationAdapter
+import com.example.reposearchapp.presentation.adapter.notification.NotificationItemSwipeHelper
 import com.example.reposearchapp.presentation.base.BaseFragment
 
 class NotificationFragment :
@@ -26,10 +28,12 @@ class NotificationFragment :
     }
 
     private fun initViews() = with(binding) {
-        if (::notificationAdapter.isInitialized.not()) {
-            notificationAdapter = NotificationAdapter()
-            recyclerNotification.adapter = notificationAdapter
-        }
+        notificationAdapter = NotificationAdapter()
+        recyclerNotification.adapter = notificationAdapter
+
+        val notificationSwipeHelper = NotificationItemSwipeHelper(requireContext())
+        val itemTouchHelper = ItemTouchHelper(notificationSwipeHelper)
+        itemTouchHelper.attachToRecyclerView(recyclerNotification)
     }
 
     private fun bindViews() {
