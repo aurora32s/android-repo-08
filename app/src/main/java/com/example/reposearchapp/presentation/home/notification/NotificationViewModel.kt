@@ -1,10 +1,12 @@
 package com.example.reposearchapp.presentation.home.notification
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.reposearchapp.R
+import com.example.reposearchapp.data.entity.notification.Notification
 import com.example.reposearchapp.data.repository.notification.DefaultNotificationRepository
 import com.example.reposearchapp.data.repository.notification.NotificationRepository
 import com.example.reposearchapp.model.notification.NotificationModel
@@ -34,11 +36,17 @@ class NotificationViewModel(
         }
     }
 
-    fun removeNotificationByThreadId(notificationModel: NotificationModel)
-        = viewModelScope.launch {
-            try {
-                notificationRepository.readNotificationByThreadId(notificationModel.threadId)
-            } catch (exception: Exception) {
+    fun readNotification(notificationModel: NotificationModel) = viewModelScope.launch {
+        try {
+            when (_notificationStateLiveData.value) {
+                is NotificationState.Success -> {
+                    val threadId = notificationModel.threadId
+                    notificationRepository.readNotificationByThreadId(threadId)
+                }
+                else -> {}
             }
+        } catch (exception: Exception) {
+            Log.d("Read", exception.toString())
         }
+    }
 }

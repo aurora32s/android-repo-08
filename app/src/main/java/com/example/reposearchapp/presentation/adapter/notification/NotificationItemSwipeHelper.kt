@@ -20,6 +20,9 @@ class NotificationItemSwipeHelper(
     private val icon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_check)
 ) : ItemTouchHelper.Callback() {
 
+    // swipe 시 호출될 listener
+    private lateinit var onSwipedListener: (Int) -> Unit
+
     // drag 와 swipe 의 위치 결정
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -41,6 +44,13 @@ class NotificationItemSwipeHelper(
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.adapterPosition
 
+        if (::onSwipedListener.isInitialized) {
+            onSwipedListener(position)
+        }
+    }
+
+    fun setOnSwipedListener(listener: (Int) -> Unit) {
+        this.onSwipedListener = listener
     }
 
     override fun onChildDraw(

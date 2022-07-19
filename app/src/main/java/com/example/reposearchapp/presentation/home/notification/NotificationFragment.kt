@@ -32,6 +32,12 @@ class NotificationFragment :
         recyclerNotification.adapter = notificationAdapter
 
         val notificationSwipeHelper = NotificationItemSwipeHelper(requireContext())
+        notificationSwipeHelper.setOnSwipedListener {
+            viewModel.readNotification(
+                notificationAdapter.currentList[it]
+            )
+        }
+
         val itemTouchHelper = ItemTouchHelper(notificationSwipeHelper)
         itemTouchHelper.attachToRecyclerView(recyclerNotification)
     }

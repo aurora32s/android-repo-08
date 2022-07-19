@@ -23,6 +23,6 @@ interface GitApiService {
     @GET(Url.GET_NOTIFICATIONS)
     suspend fun getNotifications(): Response<List<Notification>>
 
-    @PATCH("/notifications/threads/{thread_id")
+    @PATCH("/notifications/threads/{thread_id}")
     suspend fun readNotification(@Path("thread_id") threadId: Long): Response<NotificationReadResponse>
 }
