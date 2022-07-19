@@ -14,6 +14,7 @@ class NotificationViewHolder(
         tvRepoName.text = "${notification.repositoryTitle} #${notification.number}"
         tvNotificationDate.text = notification.updatedAt
         tvNotificationTitle.text = notification.title
+        tvCommentsNumber.text = "${notification.commentsNum}"
         notification.avatarUrl?.let { imgRepositoryOwner.load(notification.avatarUrl, 14f) }
     }
 }

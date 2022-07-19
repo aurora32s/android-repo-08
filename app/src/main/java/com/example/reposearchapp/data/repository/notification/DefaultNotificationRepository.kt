@@ -1,6 +1,5 @@
 package com.example.reposearchapp.data.repository.notification
 
-import android.util.Log
 import com.example.reposearchapp.data.Result
 import com.example.reposearchapp.data.entity.notification.Notification
 import com.example.reposearchapp.data.remote.GitApiService
@@ -21,7 +20,7 @@ class DefaultNotificationRepository(
         when (val result = safeApiCall { gitApiService.getNotifications() }) {
             is Result.Error -> throw Exception(result.exception)
             is Result.Success -> {
-                // TODO 각 알림별 댓글 개수 별도 요청
+                // 각 알림별 댓글 개수 별도 요청
                 result.data.map { noti ->
                     launch {
                         noti.subject.url?.let { url ->
