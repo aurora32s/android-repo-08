@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.reposearchapp.R
 import com.example.reposearchapp.data.repository.notification.DefaultNotificationRepository
 import com.example.reposearchapp.data.repository.notification.NotificationRepository
+import com.example.reposearchapp.model.notification.NotificationModel
 import kotlinx.coroutines.launch
 
 class NotificationViewModel(
@@ -32,4 +33,12 @@ class NotificationViewModel(
                 NotificationState.Error(R.string.error_notification_list)
         }
     }
+
+    fun removeNotificationByThreadId(notificationModel: NotificationModel)
+        = viewModelScope.launch {
+            try {
+                notificationRepository.readNotificationByThreadId(notificationModel.threadId)
+            } catch (exception: Exception) {
+            }
+        }
 }
