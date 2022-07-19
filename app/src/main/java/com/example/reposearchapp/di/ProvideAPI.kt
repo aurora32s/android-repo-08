@@ -35,9 +35,8 @@ fun provideJsonConvertFactory(): Converter.Factory {
 fun buildOkhttpClient(): OkHttpClient {
     return OkHttpClient.Builder()
         .addInterceptor {
-            Log.d("Interceptor", "Token: ${Token.token}")
             val request = it.request().newBuilder()
-                .addHeader("Authorization", "Bearer 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")
+                .addHeader("Authorization", "Bearer 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")
                 .addHeader("Accept", "application/json")
                 .build()
             it.proceed(request)

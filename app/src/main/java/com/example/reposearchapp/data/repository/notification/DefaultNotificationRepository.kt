@@ -1,13 +1,12 @@
 package com.example.reposearchapp.data.repository.notification
 
+import android.util.Log
 import com.example.reposearchapp.data.Result
 import com.example.reposearchapp.data.entity.notification.Notification
 import com.example.reposearchapp.data.remote.GitApiService
 import com.example.reposearchapp.data.safeApiCall
 import com.example.reposearchapp.di.provideGitApiService
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.lang.Exception
 
 class DefaultNotificationRepository(
@@ -18,10 +17,27 @@ class DefaultNotificationRepository(
     /**
      * 특정 사용자의 알림 데이터 요청
      */
-    override suspend fun getNotifications(): List<Notification> {
-        return when (val result = safeApiCall { gitApiService.getNotifications() }) {
+    override suspend fun getNotifications(): List<Notification> = withContext(ioDispatcher) {
+        when (val result = safeApiCall { gitApiService.getNotifications() }) {
             is Result.Error -> throw Exception(result.exception)
-            is Result.Success -> result.data
+            is Result.Success -> {
+                // TODO 각 알림별 댓글 개수 별도 요청
+                result.data.map { noti ->
+                    launch {
+                        noti.subject.url?.let { url ->
+                            noti.commentsNum = getSubject(url)
+                        }
+                    }
+                }.joinAll()
+                result.data
+            }
+        }
+    }
+
+    private suspend fun getSubject(subjectUrl: String): Int {
+        return when (val result = safeApiCall { gitApiService.getSubjectByUrl(subjectUrl) }) {
+            is Result.Error -> 0
+            is Result.Success -> result.data.commentNum
         }
     }
 

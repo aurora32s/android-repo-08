@@ -12,7 +12,8 @@ data class NotificationModel(
     val number: String,
     val threadId: Long,
     val avatarUrl: String?,
-    val updatedAt: String
+    val updatedAt: String,
+    val commentsNum: Int
 ) {
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<NotificationModel>() {

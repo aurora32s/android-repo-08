@@ -20,7 +20,8 @@ data class Notification(
     @SerialName("updated_at")
     val updatedAt: String?,
     @SerialName("url")
-    val url: String?
+    val url: String?,
+    var commentsNum: Int = 0,
 ) {
     fun toModel() = NotificationModel(
         id = id ?: "none",
@@ -31,6 +32,7 @@ data class Notification(
         number = subject.url?.substringAfterLast("/") ?: "0",
         threadId = url?.substringAfterLast("/")?.toLong() ?: 0,
         avatarUrl = repository.owner?.avatarUrl,
-        updatedAt = updatedAt?.toDate()?.getDiffFromNow() ?: "0"
+        updatedAt = updatedAt?.toDate()?.getDiffFromNow() ?: "0",
+        commentsNum = commentsNum
     )
 }
