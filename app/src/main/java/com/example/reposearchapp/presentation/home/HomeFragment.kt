@@ -17,6 +17,10 @@ import com.example.reposearchapp.presentation.search.SearchFragment
 import com.google.android.material.tabs.TabLayout
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+    private val fragments = listOf(
+        IssueFragment.newInstance(),
+        NotificationFragment.newInstance()
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,22 +37,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun bindViews() = with(binding) {
-        // TODO tab item 도 동적으로 추가할 수 있도록 코드 수정
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                when (TabType.getTabTypeByPosition(tab.position)) {
-                    TabType.ISSUE -> showFragment(IssueFragment.newInstance(), IssueFragment.TAG)
-                    TabType.NOTIFICATION -> showFragment(
-                        NotificationFragment.newInstance(),
-                        NotificationFragment.TAG
-                    )
-                    else -> {}
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
+//        // TODO tab item 도 동적으로 추가할 수 있도록 코드 수정
+//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab) {
+//                when (TabType.getTabTypeByPosition(tab.position)) {
+//                    TabType.ISSUE -> showFragment(IssueFragment.newInstance(), IssueFragment.TAG)
+//                    TabType.NOTIFICATION -> showFragment(
+//                        NotificationFragment.newInstance(),
+//                        NotificationFragment.TAG
+//                    )
+//                    else -> {}
+//                }
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+//            override fun onTabReselected(tab: TabLayout.Tab?) {}
+//        })
     }
 
     private fun showFragment(fragment: Fragment, tag: String) {
@@ -72,7 +76,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             }
         }
     }
-    
+
     private fun navigateToSearchFragment() {
         val f = parentFragmentManager.findFragmentByTag(SearchFragment.TAG)
         parentFragmentManager.commit {
