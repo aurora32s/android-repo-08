@@ -1,47 +1,34 @@
 package com.example.reposearchapp.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.example.reposearchapp.data.RepoItemModel
-import com.example.reposearchapp.data.Result
-import com.example.reposearchapp.data.remote.GithubApi
-import com.example.reposearchapp.data.safeApiCall
+import com.example.reposearchapp.data.SearchPagingSource
 import com.example.reposearchapp.util.GithubLanguageColorUtil
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class SearchRepository @Inject constructor(
-    private val color: GithubLanguageColorUtil,
-    private val githubApi: GithubApi
-) {
+const val NETWORK_PAGE_SIZE = 30
 
-    private val _repoList = MutableLiveData<List<RepoItemModel>>()
-    val repoList: LiveData<List<RepoItemModel>> get() = _repoList
-
+class SearchRepository @Inject constructor(private val color: GithubLanguageColorUtil) {
     suspend fun parsingColor() {
         color.parseJson()
     }
 
-    suspend fun search(query: String) {
-        if (query.isBlank()) {
-            _repoList.value = listOf()
-            return
-        }
-
-        delay(DEBOUNCE_TIME)
-
-        when (val result = safeApiCall { githubApi.getRepos(query) }) {
-            is Result.Success -> {
-                _repoList.value =
-                    result.data.items.map { it.toModel(color.colorMap?.get(it.language)) }
+    fun search(query: String): Flow<PagingData<RepoItemModel>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { SearchPagingSource(query) }
+        )
+            .flow.map {
+                it.map { repo ->
+                    repo.toModel(color.colorMap?.get(repo.language))
+                }
             }
-            is Result.Error -> {
-                _repoList.value = listOf()
-            }
-        }
-    }
-
-    companion object {
-        const val DEBOUNCE_TIME = 300L
-    }
 }
