@@ -39,6 +39,6 @@ class NotificationRepository(
     }
 
     companion object {
-        const val PER_PAGE = 10
+        const val PER_PAGE = 20
     }
 }

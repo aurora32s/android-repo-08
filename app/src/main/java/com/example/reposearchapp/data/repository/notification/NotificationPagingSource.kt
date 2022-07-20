@@ -19,7 +19,7 @@ class NotificationPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Notification> {
         val page = params.key ?: 1
 
-        return when (val result = safeApiCall { gitApiService.getNotifications() }) {
+        return when (val result = safeApiCall { gitApiService.getNotifications(page, perPage) }) {
             is Result.Error -> LoadResult.Error(Exception(result.exception))
             is Result.Success -> {
                 // 각 알림별 댓글 개수 별도 요청
@@ -45,7 +45,7 @@ class NotificationPagingSource(
     private suspend fun getSubject(subjectUrl: String): Int {
         return when (val result = safeApiCall { gitApiService.getSubjectByUrl(subjectUrl) }) {
             is Result.Error -> 0
-            is Result.Success -> result.data.commentNum
+            is Result.Success -> result.data.totalComment
         }
     }
 

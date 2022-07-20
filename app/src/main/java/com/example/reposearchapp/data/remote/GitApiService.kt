@@ -26,7 +26,10 @@ interface GitApiService {
      * 알림 데이터 전체 요청
      */
     @GET("/notifications")
-    suspend fun getNotifications(@Query("per_page") perPage: Int = 20): Response<List<Notification>>
+    suspend fun getNotifications(
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): Response<List<Notification>>
 
     /**
      * 알림 읽음 처리 요청
