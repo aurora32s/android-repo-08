@@ -25,6 +25,10 @@ data class UserResponse(
     val location: String,
     @SerialName("repos_url")
     val reposUrl: String,
+    @SerialName("public_repos")
+    val publicRepoCount: Int,
+    @SerialName("total_private_repos")
+    val privateRepoCount: Int?,
     @SerialName("starred_url")
     val starredUrl: String
 )

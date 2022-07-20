@@ -67,9 +67,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 is ProfileUiState.Loading -> {
 
                 is ProfileUiState.Success -> {
+                    binding.ivProfile.setCircleImageFromImageUrl(it.user.avatarUrl)
                 }
                     binding.ivProfile.setCircleImageFromImageUrl(it.user.avatarUrl)
                 is ProfileUiState.Error -> {
+                    println(it.message)
                 }
                 }
             }

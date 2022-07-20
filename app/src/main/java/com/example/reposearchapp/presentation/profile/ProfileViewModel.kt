@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.reposearchapp.data.entity.UserResponse
 import com.example.reposearchapp.data.repository.ProfileRepository
+import com.example.reposearchapp.model.profile.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val user = profileRepository.getUser()
-                _profileUiState.value = ProfileUiState.Success(user)
+                _profileUiState.value = ProfileUiState.Success(user.toModel())
             } catch (e: Exception) {
                 _profileUiState.value = ProfileUiState.Error(e.message.toString())
             }
@@ -33,6 +33,6 @@ class ProfileViewModel @Inject constructor(
 
 sealed class ProfileUiState {
     object Loading : ProfileUiState()
-    data class Success(val user: UserResponse) : ProfileUiState()
+    data class Success(val user: UserModel) : ProfileUiState()
     data class Error(val message: String) : ProfileUiState()
 }

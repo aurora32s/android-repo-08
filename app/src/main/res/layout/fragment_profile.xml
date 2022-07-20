@@ -11,7 +11,7 @@
 
         <variable
             name="profile"
-            type="com.example.reposearchapp.data.entity.UserResponse" />
+            type="com.example.reposearchapp.model.profile.UserModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,6 +34,7 @@
                 android:src="@drawable/ic_servicename_profile" />
 
             <ImageView
+                android:id="@+id/iv_back_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -194,6 +195,7 @@
                 style="@style/whiteBoldContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{String.valueOf(profile.reposCount)}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_profile_repo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_profile_repo"
@@ -216,6 +218,7 @@
                 style="@style/whiteBoldContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{String.valueOf(profile.starredCount)}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_profile_starred"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_profile_starred"
