@@ -15,4 +15,6 @@ sealed interface NotificationState {
     data class ErrorNotificationRead(
         val errorMsg: Int
     ) : NotificationState
+
+    object SuccessRead : NotificationState
 }

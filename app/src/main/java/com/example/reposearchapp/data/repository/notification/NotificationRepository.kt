@@ -1,5 +1,6 @@
 package com.example.reposearchapp.data.repository.notification
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -32,13 +33,12 @@ class NotificationRepository(
      */
     suspend fun readNotificationByThreadId(threadId: Long) {
         val result = gitApiService.readNotification(threadId)
-
         if (result.code() != 205) {
             throw Exception(result.message())
         }
     }
 
     companion object {
-        const val PER_PAGE = 20
+        const val PER_PAGE = 10
     }
 }

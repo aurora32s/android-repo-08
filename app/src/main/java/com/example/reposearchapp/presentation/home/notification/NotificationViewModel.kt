@@ -31,7 +31,6 @@ class NotificationViewModel(
     fun getNotifications() = viewModelScope.launch {
         notificationDataFlow = notificationRepository.getNotifications().cachedIn(viewModelScope)
             .map { notifications -> notifications.map { notification -> notification.toModel() } }
-            .onStart { _notificationStateLiveData.value = NotificationState.Loading }
             .catch {
                 _notificationStateLiveData.value =
                     NotificationState.Error(R.string.error_issue_list)
@@ -39,17 +38,11 @@ class NotificationViewModel(
         _notificationStateLiveData.value = NotificationState.FetchFinish
     }
 
-    fun readNotification(notificationIndex: Int) = viewModelScope.launch {
+    fun readNotification(notificationModel: NotificationModel) = viewModelScope.launch {
         try {
-            when (notificationStateLiveData.value) {
-                is NotificationState.FetchFinish -> {
-//                    val threadId = notificationModel.threadId
-//                    notificationRepository.readNotificationByThreadId(threadId)
-//                    notificationDataFlow =
-//                        notificationDataFlow.map { notifications -> notifications.filter { it.id != notificationModel.id } }
-                }
-                else -> {}
-            }
+            val threadId = notificationModel.threadId
+            notificationRepository.readNotificationByThreadId(threadId)
+            _notificationStateLiveData.value = NotificationState.SuccessRead
         } catch (exception: Exception) {
             _notificationStateLiveData.value =
                 NotificationState.ErrorNotificationRead(R.string.error_notification_read)

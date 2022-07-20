@@ -3,6 +3,7 @@ package com.example.reposearchapp.presentation.home.notification
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Adapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -36,10 +37,12 @@ class NotificationFragment :
         recyclerNotification.adapter = notificationAdapter
 
         val notificationSwipeHelper = NotificationItemSwipeHelper(requireContext())
-        notificationSwipeHelper.setOnSwipedListener {
-//            viewModel.readNotification(
-//                notificationAdapter.getItemId()
-//            )
+        notificationSwipeHelper.setOnSwipedListener { position ->
+            val notificationModel = notificationAdapter.getItemByPosition(position)
+            println(notificationModel.toString())
+            notificationModel?.let {
+                viewModel.readNotification(it)
+            }
         }
 
         val itemTouchHelper = ItemTouchHelper(notificationSwipeHelper)
@@ -55,8 +58,9 @@ class NotificationFragment :
             when (it) {
                 NotificationState.UnInitialState -> viewModel.getNotifications()
                 NotificationState.Loading -> handleLoading()
-                is NotificationState.FetchFinish -> handleSuccess()
+                NotificationState.FetchFinish -> handleSuccess()
                 is NotificationState.Error -> handleError(it)
+                NotificationState.SuccessRead -> handleSuccessRead()
             }
         }
 
@@ -75,6 +79,10 @@ class NotificationFragment :
 
     private fun handleError(state: NotificationState.Error) {
 
+    }
+
+    private fun handleSuccessRead() {
+        notificationAdapter.refresh()
     }
 
     companion object {

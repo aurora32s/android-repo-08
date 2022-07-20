@@ -18,4 +18,6 @@ class NotificationAdapter :
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         getItem(position)?.let { holder.bindView(it) }
     }
+
+    fun getItemByPosition(position: Int) = getItem(position)
 }
