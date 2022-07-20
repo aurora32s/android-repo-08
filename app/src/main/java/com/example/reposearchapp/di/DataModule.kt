@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
+import retrofit2.Converter
 import retrofit2.Retrofit
 import javax.inject.Qualifier
 import javax.inject.Singleton
@@ -58,6 +59,19 @@ object GithubLanguageColorUtilModule {
             application,
             defaultDispatcher
         )
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object ConverterModule {
+
+    @Provides
+    fun provideJsonConverter(
+    ): Converter.Factory {
+        return Json {
+            ignoreUnknownKeys = true
+        }.asConverterFactory(MediaType.parse("application/json")!!)
+    }
 }
 
 @Module
@@ -107,13 +121,12 @@ object NetworkModule {
     @Provides
     fun provideAccessApi(
         @AccessApiOkHttpClient
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
+        converter: Converter.Factory
     ): AccessApi {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .addConverterFactory(Json {
-                ignoreUnknownKeys = true
-            }.asConverterFactory(MediaType.parse("application/json")!!))
+            .addConverterFactory(converter)
             .baseUrl("https://github.com/")
             .build()
             .create(AccessApi::class.java)
@@ -122,13 +135,12 @@ object NetworkModule {
     @Provides
     fun provideGithubApi(
         @GithubApiOkHttpClient
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
+        converter: Converter.Factory
     ): GithubApi {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .addConverterFactory(Json {
-                ignoreUnknownKeys = true
-            }.asConverterFactory(MediaType.parse("application/json")!!))
+            .addConverterFactory(converter)
             .baseUrl("https://api.github.com")
             .build()
             .create(GithubApi::class.java)
