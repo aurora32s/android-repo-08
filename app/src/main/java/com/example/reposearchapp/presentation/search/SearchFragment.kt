@@ -45,6 +45,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 }
             })
         }
+
+        binding.ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     private fun initRecyclerView() {
