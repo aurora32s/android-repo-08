@@ -49,8 +49,11 @@ class NotificationFragment :
         itemTouchHelper.attachToRecyclerView(recyclerNotification)
     }
 
-    private fun bindViews() {
-
+    private fun bindViews() = with(binding) {
+        swipeRefreshLayout.setOnRefreshListener {
+            notificationAdapter.refresh()
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun observeNotification() =
