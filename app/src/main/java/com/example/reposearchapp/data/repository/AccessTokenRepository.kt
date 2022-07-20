@@ -1,40 +1,38 @@
 package com.example.reposearchapp.data.repository
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.stringPreferencesKey
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import com.example.reposearchapp.BuildConfig
 import com.example.reposearchapp.data.Result
 import com.example.reposearchapp.data.entity.AccessTokenRequest
-import com.example.reposearchapp.data.remote.AccessService
+import com.example.reposearchapp.data.remote.AccessApi
 import com.example.reposearchapp.data.safeApiCall
 import com.example.reposearchapp.util.Event
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.mapNotNull
-import java.io.IOException
 import javax.inject.Inject
 
 class AccessTokenRepository @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    private val application: Context,
+    private val accessApi: AccessApi
 ) {
-    private val tokenKey = stringPreferencesKey(ACCESS_TOKEN_KEY)
+    private val keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC
+    private val mainKeyAlias = MasterKeys.getOrCreate(keyGenParameterSpec)
+    private val sharedPrefsFile: String = ACCESS_TOKEN_KEY
+    private val sharedPreferences: SharedPreferences = EncryptedSharedPreferences.create(
+        sharedPrefsFile,
+        mainKeyAlias,
+        application,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
 
-    val token: Flow<String> = dataStore.data.catch { exception ->
-        if (exception is IOException) {
-            emit(emptyPreferences())
-        } else {
-            throw exception
-        }
-    }.mapNotNull { preferences ->
-        preferences[tokenKey]
-    }
+    var accessToken: String? = null
+        private set
 
-    suspend fun getToken(code: String): Event {
+    suspend fun requestToken(code: String): Event {
         val result = safeApiCall {
-            AccessService.api.requestAccessToken(
+            accessApi.requestAccessToken(
                 AccessTokenRequest(
                     clientId = BuildConfig.GITHUB_CLIENT_ID,
                     clientSecret = BuildConfig.GITHUB_CLIENT_SECRET,
@@ -45,6 +43,7 @@ class AccessTokenRepository @Inject constructor(
 
         return when (result) {
             is Result.Success -> {
+                accessToken = result.data.accessToken
                 saveToken(result.data.accessToken)
                 Event.Success(result.data.accessToken)
             }
@@ -54,20 +53,26 @@ class AccessTokenRepository @Inject constructor(
         }
     }
 
-    private suspend fun saveToken(token: String) {
-        dataStore.edit { preferences ->
-            preferences[tokenKey] = token
+    fun requestToken() {
+        val token = sharedPreferences.getString(ACCESS_TOKEN_KEY, "") ?: ""
+        accessToken = token
+    }
+
+    private fun saveToken(token: String) {
+        with(sharedPreferences.edit()) {
+            putString(ACCESS_TOKEN_KEY, token)
+            apply()
         }
     }
 
-    suspend fun removeToken() {
-        dataStore.edit { preferences ->
-            preferences.clear()
+    fun removeToken() {
+        with(sharedPreferences.edit()) {
+            remove(ACCESS_TOKEN_KEY)
+            apply()
         }
     }
 
     companion object {
-        const val ACCESS_TOKEN_DATA_STORE = "accessTokenDataStore"
         const val ACCESS_TOKEN_KEY = "accessToken"
     }
 }
