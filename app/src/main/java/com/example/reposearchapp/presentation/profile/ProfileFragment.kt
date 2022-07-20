@@ -19,7 +19,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         observeState()
     }
 
-    // 고민 1. observe를 위치를 어디에 둘까?
     private fun observeState() {
         viewmodel.profileUiState.observe(viewLifecycleOwner) {
             when(it){
@@ -27,10 +26,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
                 }
                 is ProfileUiState.Success -> {
-                    println(it.user)
+                    binding.profile = it.user
                 }
                 is ProfileUiState.Error -> {
-                    println(it)
                 }
             }
         }

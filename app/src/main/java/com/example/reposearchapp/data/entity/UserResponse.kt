@@ -5,6 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserResponse(
+    @SerialName("name")
+    val name: String?,
+    @SerialName("bio")
+    val bio: String?,
+    @SerialName("login")
+    val login: String,
     @SerialName("avatar_url")
     val avatarUrl: String,
     @SerialName("blog")
