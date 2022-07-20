@@ -9,16 +9,20 @@ import com.example.reposearchapp.data.safeApiCall
 import com.example.reposearchapp.di.provideGitApiService
 
 class IssuePagingSource(
-    private val gitApiService: GitApiService = provideGitApiService()
-): PagingSource<Int, Issue>() {
+    private val gitApiService: GitApiService = provideGitApiService(),
+    private val state: String,
+    private val perPage: Int,
+) : PagingSource<Int, Issue>() {
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Issue> {
         val page = params.key ?: 1
 
         return when (val result =
             safeApiCall {
                 gitApiService.getIssues(
+                    state = state,
                     page = page,
-                    perPage = params.loadSize
+                    perPage = perPage
                 )
             }) {
             is Result.Error -> LoadResult.Error(Exception(result.exception))
@@ -26,7 +30,7 @@ class IssuePagingSource(
                 LoadResult.Page(
                     data = result.data,
                     prevKey = if (page == 1) null else page - 1,
-                    nextKey = if (result.data.isEmpty()) null else page + (params.loadSize / 10)
+                    nextKey = if (result.data.isEmpty()) null else page + (params.loadSize / perPage)
                 )
             }
         }

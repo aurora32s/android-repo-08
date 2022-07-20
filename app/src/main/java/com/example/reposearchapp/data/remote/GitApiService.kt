@@ -17,6 +17,7 @@ interface GitApiService {
      */
     @GET("/issues")
     suspend fun getIssues(
+        @Query("state") state: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int = 20,
     ): Response<List<Issue>>
