@@ -10,4 +10,6 @@ interface GithubApi {
 
     @GET("search/repositories")
     suspend fun getRepos(@Query("q") query: String): Response<RepoResponse>
+
+
 }

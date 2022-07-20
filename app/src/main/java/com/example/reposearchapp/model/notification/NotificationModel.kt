@@ -10,7 +10,7 @@ data class NotificationModel(
     val title: String,
     val type: String,
     val number: String,
-    val threadId: String,
+    val threadId: Long,
     val avatarUrl: String?,
     val updatedAt: String
 ) {

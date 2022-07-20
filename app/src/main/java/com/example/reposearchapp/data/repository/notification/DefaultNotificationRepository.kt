@@ -24,4 +24,15 @@ class DefaultNotificationRepository(
             is Result.Success -> result.data
         }
     }
+
+    /**
+     * thread id를 이용해 특정 알림 제거
+     */
+    override suspend fun readNotificationByThreadId(threadId: Long) {
+        val result = gitApiService.readNotification(threadId)
+
+        if (result.code() != 205) {
+            throw Exception(result.message())
+        }
+    }
 }

@@ -14,6 +14,8 @@ data class Issue(
     val id: Int?,
     @SerialName("created_at")
     val createdAt: String?,
+    @SerialName("updated_at")
+    val updatedAt: String?,
     @SerialName("repository")
     val repository: Repository,
     @SerialName("number")

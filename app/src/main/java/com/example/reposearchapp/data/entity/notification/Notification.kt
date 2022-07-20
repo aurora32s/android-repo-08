@@ -29,7 +29,7 @@ data class Notification(
         title = subject.title ?: "UnKnown",
         type = subject.type ?: "none",
         number = subject.url?.substringAfterLast("/") ?: "0",
-        threadId = url?.substringAfterLast("/") ?: "0",
+        threadId = url?.substringAfterLast("/")?.toLong() ?: 0,
         avatarUrl = repository.owner?.avatarUrl,
         updatedAt = updatedAt?.toDate()?.getDiffFromNow() ?: "0"
     )
