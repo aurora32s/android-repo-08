@@ -1,4 +1,4 @@
-package com.example.reposearchapp.data
+package com.example.reposearchapp.model.search
 
 import kotlinx.serialization.Serializable
 

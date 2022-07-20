@@ -1,6 +1,9 @@
-package com.example.reposearchapp.data.remote
+package com.example.reposearchapp.di
 
-import com.example.reposearchapp.data.repository.AccessTokenRepository
+import com.example.reposearchapp.data.remote.AccessApi
+import com.example.reposearchapp.data.remote.GithubApi
+import com.example.reposearchapp.data.remote.GithubServiceInterceptor
+import com.example.reposearchapp.data.repository.login.AccessTokenRepository
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides

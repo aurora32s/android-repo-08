@@ -1,7 +1,7 @@
-package com.example.reposearchapp.presentation.adapter
+package com.example.reposearchapp.presentation.adapter.search
 
 import androidx.recyclerview.widget.RecyclerView
-import com.example.reposearchapp.data.RepoItemModel
+import com.example.reposearchapp.model.search.RepoItemModel
 import com.example.reposearchapp.databinding.ItemRepoBinding
 
 class RepoViewHolder(private val binding: ItemRepoBinding) :
