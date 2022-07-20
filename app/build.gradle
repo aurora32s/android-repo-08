@@ -79,4 +79,6 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     implementation "androidx.security:security-crypto:$security_crypto_version"
+
+    implementation "androidx.paging:paging-runtime:3.1.1"
 }

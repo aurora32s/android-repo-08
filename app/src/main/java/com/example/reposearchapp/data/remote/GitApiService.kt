@@ -16,7 +16,10 @@ interface GitApiService {
      * state 에 맞는 이슈 정보들 요청
      */
     @GET("/issues")
-    suspend fun getIssues(@Query("state") state: String): Response<List<Issue>>
+    suspend fun getIssues(
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int = 20,
+    ): Response<List<Issue>>
 
     /**
      * 알림 데이터 전체 요청

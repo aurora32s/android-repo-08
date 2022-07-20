@@ -3,12 +3,15 @@ package com.example.reposearchapp.presentation.home.issue
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentIssueBinding
 import com.example.reposearchapp.model.issue.IssueType
 import com.example.reposearchapp.presentation.adapter.issue.IssueListAdapter
 import com.example.reposearchapp.presentation.adapter.issue.IssueOptionAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue) {
 
@@ -47,12 +50,18 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
         }
     }
 
-    private fun observeIssue() = viewModel.issueStateLiveData.observe(viewLifecycleOwner) {
-        when (it) {
-            IssueState.UnInitialState -> viewModel.fetchData()
-            IssueState.Loading -> handleLoading()
-            is IssueState.Success -> handleSuccess(it)
-            is IssueState.Error -> handleError(it)
+    private fun observeIssue() {
+        viewModel.issueStateLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                IssueState.UnInitialState -> {}
+                IssueState.Loading -> handleLoading()
+                IssueState.FetchFinish -> {}
+                is IssueState.Error -> handleError(it)
+            }
+        }
+        // paging data
+        lifecycleScope.launch {
+            viewModel.getIssues().collectLatest { issueListAdapter.submitData(it) }
         }
     }
 
@@ -60,8 +69,7 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
 
     }
 
-    private fun handleSuccess(state: IssueState.Success) {
-        issueListAdapter.submitList(state.issues)
+    private fun handleSuccess() {
     }
 
     private fun handleError(state: IssueState.Error) {
