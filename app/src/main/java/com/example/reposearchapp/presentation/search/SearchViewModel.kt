@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.reposearchapp.data.RepoItemModel
-import com.example.reposearchapp.data.repository.SearchRepository
+import com.example.reposearchapp.data.repository.search.SearchRepository
+import com.example.reposearchapp.model.search.RepoItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

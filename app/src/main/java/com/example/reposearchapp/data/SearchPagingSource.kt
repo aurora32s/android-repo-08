@@ -2,15 +2,19 @@ package com.example.reposearchapp.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.reposearchapp.data.entity.Item
-import com.example.reposearchapp.data.remote.GithubService
-import com.example.reposearchapp.data.repository.NETWORK_PAGE_SIZE
+import com.example.reposearchapp.data.entity.search.Item
+import com.example.reposearchapp.data.remote.GithubApi
+import com.example.reposearchapp.data.repository.search.NETWORK_PAGE_SIZE
 
-class SearchPagingSource(val query: String) : PagingSource<Int, Item>() {
+class SearchPagingSource(
+    private val query: String,
+    private val githubApi: GithubApi
+) : PagingSource<Int, Item>() {
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Item> {
         val start = params.key ?: STARTING_KEY
 
-        when (val result = safeApiCall { GithubService.api.getRepos(query, start) }) {
+        when (val result = safeApiCall { githubApi.getRepos(query, start) }) {
             is Result.Success -> {
                 return LoadResult.Page(
                     data = result.data.items,
@@ -23,6 +27,7 @@ class SearchPagingSource(val query: String) : PagingSource<Int, Item>() {
             }
 
             is Result.Error -> {
+                println(result.exception)
                 return LoadResult.Error(Exception(result.exception))
             }
         }
