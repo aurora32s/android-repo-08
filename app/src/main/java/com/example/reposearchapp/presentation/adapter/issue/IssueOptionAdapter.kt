@@ -40,14 +40,14 @@ class IssueOptionAdapter(
                 val issueType = getItem(position)
                 tvIssueType.text = context.getString(issueType.optionName)
 
-//                val isSelected = issueType == viewModel.issueType
-//                tvIssueType.setTextColor(
-//                    ContextCompat.getColor(
-//                        context,
-//                        if (isSelected) R.color.white else R.color.grey
-//                    )
-//                )
-//                imgCheckIcon.isVisible = isSelected
+                val isSelected = issueType == viewModel.issueType.value
+                tvIssueType.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        if (isSelected) R.color.white else R.color.grey
+                    )
+                )
+                imgCheckIcon.isVisible = isSelected
             }.root
         }
 }
