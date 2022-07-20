@@ -1,7 +1,5 @@
 package com.example.reposearchapp.di
 
-import android.util.Log
-import com.example.reposearchapp.data.Token
 import com.example.reposearchapp.data.remote.GitApiService
 import com.example.reposearchapp.data.url.Url
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -36,7 +34,7 @@ fun buildOkhttpClient(): OkHttpClient {
     return OkHttpClient.Builder()
         .addInterceptor {
             val request = it.request().newBuilder()
-                .addHeader("Authorization", "Bearer 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")
+                .addHeader("Authorization", "Bearer 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")
                 .addHeader("Accept", "application/json")
                 .build()
             it.proceed(request)

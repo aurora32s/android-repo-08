@@ -16,18 +16,20 @@ class DefaultNotificationRepository(
     /**
      * 특정 사용자의 알림 데이터 요청
      */
-    override suspend fun getNotifications(): List<Notification> = withContext(ioDispatcher) {
-        when (val result = safeApiCall { gitApiService.getNotifications() }) {
+    override suspend fun getNotifications(): List<Notification> {
+        return when (val result = safeApiCall { gitApiService.getNotifications() }) {
             is Result.Error -> throw Exception(result.exception)
             is Result.Success -> {
                 // 각 알림별 댓글 개수 별도 요청
-                result.data.map { noti ->
-                    launch {
-                        noti.subject.url?.let { url ->
-                            noti.commentsNum = getSubject(url)
+                coroutineScope {
+                    result.data.map { noti ->
+                        launch {
+                            noti.subject.url?.let { url ->
+                                noti.commentsNum = getSubject(url)
+                            }
                         }
-                    }
-                }.joinAll()
+                    }.joinAll()
+                }
                 result.data
             }
         }
