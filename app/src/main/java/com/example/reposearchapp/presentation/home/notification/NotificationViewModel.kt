@@ -1,19 +1,22 @@
 package com.example.reposearchapp.presentation.home.notification
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.filter
+import androidx.paging.map
 import com.example.reposearchapp.R
-import com.example.reposearchapp.data.entity.notification.Notification
-import com.example.reposearchapp.data.repository.notification.DefaultNotificationRepository
 import com.example.reposearchapp.data.repository.notification.NotificationRepository
 import com.example.reposearchapp.model.notification.NotificationModel
+import com.example.reposearchapp.presentation.home.issue.IssueState
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class NotificationViewModel(
-    private val notificationRepository: NotificationRepository = DefaultNotificationRepository()
+    private val notificationRepository: NotificationRepository = NotificationRepository()
 ) : ViewModel() {
 
     private val _notificationStateLiveData =
@@ -21,30 +24,29 @@ class NotificationViewModel(
     val notificationStateLiveData: LiveData<NotificationState>
         get() = _notificationStateLiveData
 
-    fun fetchData() = viewModelScope.launch {
-        try {
-            _notificationStateLiveData.value = NotificationState.Loading
-            val notifications = notificationRepository.getNotifications()
+    lateinit var notificationDataFlow: Flow<PagingData<NotificationModel>>
+        private set
 
-            if (notifications.isNotEmpty()) {
+
+    fun getNotifications() = viewModelScope.launch {
+        notificationDataFlow = notificationRepository.getNotifications().cachedIn(viewModelScope)
+            .map { notifications -> notifications.map { notification -> notification.toModel() } }
+            .onStart { _notificationStateLiveData.value = NotificationState.Loading }
+            .catch {
                 _notificationStateLiveData.value =
-                    NotificationState.Success(notifications.map { it.toModel() })
+                    NotificationState.Error(R.string.error_issue_list)
             }
-        } catch (exception: Exception) {
-            _notificationStateLiveData.value =
-                NotificationState.Error(R.string.error_notification_list)
-        }
+        _notificationStateLiveData.value = NotificationState.FetchFinish
     }
 
-    fun readNotification(notificationModel: NotificationModel) = viewModelScope.launch {
+    fun readNotification(notificationIndex: Int) = viewModelScope.launch {
         try {
-            when (val state = _notificationStateLiveData.value) {
-                is NotificationState.Success -> {
-                    val threadId = notificationModel.threadId
-                    notificationRepository.readNotificationByThreadId(threadId)
-                    _notificationStateLiveData.value = NotificationState.Success(
-                        state.notifications.filter { it.id != notificationModel.id }
-                    )
+            when (notificationStateLiveData.value) {
+                is NotificationState.FetchFinish -> {
+//                    val threadId = notificationModel.threadId
+//                    notificationRepository.readNotificationByThreadId(threadId)
+//                    notificationDataFlow =
+//                        notificationDataFlow.map { notifications -> notifications.filter { it.id != notificationModel.id } }
                 }
                 else -> {}
             }

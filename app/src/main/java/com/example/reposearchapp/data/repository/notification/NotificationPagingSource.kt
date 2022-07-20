@@ -1,24 +1,26 @@
 package com.example.reposearchapp.data.repository.notification
 
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.example.reposearchapp.data.Result
 import com.example.reposearchapp.data.entity.notification.Notification
 import com.example.reposearchapp.data.remote.GitApiService
 import com.example.reposearchapp.data.safeApiCall
 import com.example.reposearchapp.di.provideGitApiService
-import kotlinx.coroutines.*
-import java.lang.Exception
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 
-class DefaultNotificationRepository(
+class NotificationPagingSource(
     private val gitApiService: GitApiService = provideGitApiService(),
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : NotificationRepository {
+    private val perPage: Int
+) : PagingSource<Int, Notification>() {
 
-    /**
-     * 특정 사용자의 알림 데이터 요청
-     */
-    override suspend fun getNotifications(): List<Notification> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Notification> {
+        val page = params.key ?: 1
+
         return when (val result = safeApiCall { gitApiService.getNotifications() }) {
-            is Result.Error -> throw Exception(result.exception)
+            is Result.Error -> LoadResult.Error(Exception(result.exception))
             is Result.Success -> {
                 // 각 알림별 댓글 개수 별도 요청
                 coroutineScope {
@@ -30,7 +32,12 @@ class DefaultNotificationRepository(
                         }
                     }.joinAll()
                 }
-                result.data
+
+                LoadResult.Page(
+                    data = result.data,
+                    prevKey = if (page == 1) null else page - 1,
+                    nextKey = if (result.data.isEmpty()) null else page + 1
+                )
             }
         }
     }
@@ -42,14 +49,10 @@ class DefaultNotificationRepository(
         }
     }
 
-    /**
-     * thread id를 이용해 특정 알림 제거
-     */
-    override suspend fun readNotificationByThreadId(threadId: Long) {
-        val result = gitApiService.readNotification(threadId)
-
-        if (result.code() != 205) {
-            throw Exception(result.message())
+    override fun getRefreshKey(state: PagingState<Int, Notification>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 }

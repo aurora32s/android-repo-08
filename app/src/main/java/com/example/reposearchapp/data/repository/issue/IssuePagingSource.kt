@@ -30,7 +30,7 @@ class IssuePagingSource(
                 LoadResult.Page(
                     data = result.data,
                     prevKey = if (page == 1) null else page - 1,
-                    nextKey = if (result.data.isEmpty()) null else page + (params.loadSize / perPage)
+                    nextKey = if (result.data.isEmpty()) null else page + 1
                 )
             }
         }

@@ -36,9 +36,9 @@ class IssueViewModel(
             .combine(issueType) { issues, query ->
                 if (query == IssueType.ALL) issues else issues.filter { it.state == query }
             }
-//            .onStart { _issueStateLiveData.value = IssueState.Loading }
-//            .onCompletion { _issueStateLiveData.value = IssueState.FetchFinish }
-//            .catch { _issueStateLiveData.value = IssueState.Error(R.string.error_issue_list) }
+            .onStart { _issueStateLiveData.value = IssueState.Loading }
+            .onCompletion { _issueStateLiveData.value = IssueState.FetchFinish }
+            .catch { _issueStateLiveData.value = IssueState.Error(R.string.error_issue_list) }
     }
 
     /**

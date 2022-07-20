@@ -6,9 +6,7 @@ sealed interface NotificationState {
     object UnInitialState : NotificationState
     object Loading : NotificationState
 
-    data class Success(
-        val notifications: List<NotificationModel>
-    ) : NotificationState
+    object FetchFinish : NotificationState
 
     data class Error(
         val errorMsg: Int

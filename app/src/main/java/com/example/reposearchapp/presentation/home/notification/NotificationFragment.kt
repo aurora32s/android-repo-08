@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentNotificationBinding
 import com.example.reposearchapp.presentation.adapter.notification.NotificationAdapter
 import com.example.reposearchapp.presentation.adapter.notification.NotificationItemSwipeHelper
 import com.example.reposearchapp.presentation.base.BaseFragment
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class NotificationFragment :
     BaseFragment<FragmentNotificationBinding>(R.layout.fragment_notification) {
@@ -33,9 +37,9 @@ class NotificationFragment :
 
         val notificationSwipeHelper = NotificationItemSwipeHelper(requireContext())
         notificationSwipeHelper.setOnSwipedListener {
-            viewModel.readNotification(
-                notificationAdapter.currentList[it]
-            )
+//            viewModel.readNotification(
+//                notificationAdapter.getItemId()
+//            )
         }
 
         val itemTouchHelper = ItemTouchHelper(notificationSwipeHelper)
@@ -49,9 +53,9 @@ class NotificationFragment :
     private fun observeNotification() =
         viewModel.notificationStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                NotificationState.UnInitialState -> viewModel.fetchData()
+                NotificationState.UnInitialState -> viewModel.getNotifications()
                 NotificationState.Loading -> handleLoading()
-                is NotificationState.Success -> handleSuccess(it)
+                is NotificationState.FetchFinish -> handleSuccess()
                 is NotificationState.Error -> handleError(it)
             }
         }
@@ -60,8 +64,13 @@ class NotificationFragment :
 
     }
 
-    private fun handleSuccess(state: NotificationState.Success) {
-        notificationAdapter.submitList(state.notifications)
+    private fun handleSuccess() {
+        // notification paging data
+        lifecycleScope.launch {
+            viewModel.notificationDataFlow.collectLatest {
+                notificationAdapter.submitData(it)
+            }
+        }
     }
 
     private fun handleError(state: NotificationState.Error) {
