@@ -18,6 +18,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -71,12 +72,26 @@ object InterceptorModule {
     }
 }
 
+@Qualifier
+annotation class AccessApiOkHttpClient
+
+@Qualifier
+annotation class GithubApiOkHttpClient
+
 @Module
 @InstallIn(SingletonComponent::class)
 object OkHttpModule {
 
+    @AccessApiOkHttpClient
     @Provides
-    fun provideInterceptorOkHttpClient(
+    fun provideAccessApiOkHttpClient(
+    ): OkHttpClient {
+        return OkHttpClient().newBuilder().build()
+    }
+
+    @GithubApiOkHttpClient
+    @Provides
+    fun provideGithubApiOkHttpClient(
         interceptor: GithubServiceInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
@@ -91,9 +106,11 @@ object NetworkModule {
 
     @Provides
     fun provideAccessApi(
+        @AccessApiOkHttpClient
+        okHttpClient: OkHttpClient
     ): AccessApi {
         return Retrofit.Builder()
-            .client(OkHttpClient().newBuilder().build())
+            .client(okHttpClient)
             .addConverterFactory(Json {
                 ignoreUnknownKeys = true
             }.asConverterFactory(MediaType.parse("application/json")!!))
@@ -104,6 +121,7 @@ object NetworkModule {
 
     @Provides
     fun provideGithubApi(
+        @GithubApiOkHttpClient
         okHttpClient: OkHttpClient
     ): GithubApi {
         return Retrofit.Builder()
