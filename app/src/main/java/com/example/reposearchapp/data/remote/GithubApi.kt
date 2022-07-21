@@ -8,7 +8,8 @@ import retrofit2.http.Query
 
 interface GithubApi {
 
-    @Headers("Accept: application/json")
     @GET("search/repositories")
     suspend fun getRepos(@Query("q") query: String): Response<RepoResponse>
+
+
 }

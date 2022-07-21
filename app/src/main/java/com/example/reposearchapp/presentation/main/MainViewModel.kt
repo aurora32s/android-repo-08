@@ -16,11 +16,9 @@ class MainViewModel @Inject constructor(private val accessTokenRepository: Acces
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
     val event: SharedFlow<Event> get() = _event
 
-    val accessToken = accessTokenRepository.token
-
     fun requestAccessToken(code: String) {
         viewModelScope.launch {
-            _event.emit(accessTokenRepository.getToken(code))
+            _event.emit(accessTokenRepository.requestToken(code))
         }
     }
 }
