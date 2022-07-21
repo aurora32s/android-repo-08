@@ -7,6 +7,7 @@ import android.widget.Adapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.reposearchapp.R
@@ -27,6 +28,17 @@ class NotificationFragment :
     private val viewModel: NotificationViewModel by viewModels()
 
     private lateinit var notificationAdapter: NotificationAdapter
+
+    private val nofitifcationLoadStateListenr = { loadStates: CombinedLoadStates ->
+        binding.apply {
+            progressInit.isVisible = loadStates.refresh is LoadState.Loading
+            progressPaging.isVisible = loadStates.append is LoadState.Loading
+        }
+
+        if (loadStates.refresh is LoadState.Error || loadStates.append is LoadState.Error) {
+            handleError()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -98,6 +110,11 @@ class NotificationFragment :
 
     private fun handleSuccessRead() {
         notificationAdapter.refresh()
+    }
+
+    override fun onDestroyView() {
+        notificationAdapter.removeLoadStateListener(nofitifcationLoadStateListenr)
+        super.onDestroyView()
     }
 
     companion object {

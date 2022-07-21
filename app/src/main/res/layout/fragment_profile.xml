@@ -153,7 +153,6 @@
             android:layout_marginTop="18dp"
             android:drawableStart="@drawable/ic_user"
             android:drawablePadding="11dp"
-            android:text="@{@string/profile_follower(profile.followers)}"
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toBottomOf="@id/tv_email"
             tools:text="59 Followers" />
@@ -166,7 +165,6 @@
             android:layout_marginStart="4dp"
             android:drawableStart="@drawable/ic_userandprojectname"
             android:drawablePadding="4dp"
-            android:text="@{@string/profile_following(profile.following)}"
             app:layout_constraintStart_toEndOf="@id/tv_follower"
             app:layout_constraintTop_toTopOf="@id/tv_follower"
             tools:text="6 Followings" />
@@ -195,7 +193,7 @@
                 style="@style/whiteBoldContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{String.valueOf(profile.reposCount)}"
+                formatNumber="@{profile.reposCount}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_profile_repo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_profile_repo"
@@ -218,7 +216,7 @@
                 style="@style/whiteBoldContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{String.valueOf(profile.starredCount)}"
+                formatNumber="@{profile.starredCount}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_profile_starred"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_profile_starred"

@@ -32,3 +32,8 @@ fun TextView.setTextViewDrawableTint(color: String?) {
 
     this.compoundDrawableTintList = ColorStateList.valueOf(colorCode)
 }
+
+@BindingAdapter("formatNumber")
+fun TextView.formatNumber(number: Int?) {
+    text = number?.formatNumber() ?: ""
+}

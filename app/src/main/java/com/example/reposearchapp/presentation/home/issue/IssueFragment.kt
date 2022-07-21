@@ -7,6 +7,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentIssueBinding
@@ -28,7 +29,16 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
     private lateinit var issueListAdapter: IssueListAdapter
     private lateinit var issueOptionListAdapter: IssueOptionAdapter
 
-    private var isInit = true
+    private val issueLoadStateListenr = { loadStates: CombinedLoadStates ->
+        binding.apply {
+            progressInit.isVisible = loadStates.refresh is LoadState.Loading
+            progressPaging.isVisible = loadStates.append is LoadState.Loading
+        }
+
+        if (loadStates.refresh is LoadState.Error || loadStates.append is LoadState.Error) {
+            handleError()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,16 +73,7 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
             swipeRefreshLayout.isRefreshing = false
         }
 
-        issueListAdapter.addLoadStateListener { loadStates ->
-            binding.apply {
-                progressInit.isVisible = loadStates.refresh is LoadState.Loading
-                progressPaging.isVisible = loadStates.append is LoadState.Loading
-            }
-
-            if (loadStates.refresh is LoadState.Error || loadStates.append is LoadState.Error) {
-                handleError()
-            }
-        }
+        issueListAdapter.addLoadStateListener(issueLoadStateListenr)
     }
 
     private fun observeIssue() {
@@ -96,6 +97,11 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
     private fun handleSuccess() {}
     private fun handleError() {
         showSnackBar(binding.root, requireContext().getString(R.string.error_issue_list))
+    }
+
+    override fun onDestroyView() {
+        issueListAdapter.removeLoadStateListener(issueLoadStateListenr)
+        super.onDestroyView()
     }
 
     companion object {

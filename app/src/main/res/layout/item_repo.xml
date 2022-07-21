@@ -65,13 +65,13 @@
         <TextView
             android:id="@+id/tv_star"
             style="@style/grayContent"
+            formatNumber="@{item.stargazersCount}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:layout_marginTop="11dp"
             android:drawableStart="@drawable/ic_star"
             android:drawablePadding="3dp"
-            android:text="@{String.valueOf(item.stargazersCount)}"
             app:layout_constraintStart_toStartOf="@id/tv_repo_nm"
             app:layout_constraintTop_toBottomOf="@id/tv_repo_description" />
 
