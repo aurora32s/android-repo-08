@@ -1,11 +1,14 @@
 package com.example.reposearchapp.presentation.adapter.issue
 
+import android.animation.AnimatorInflater
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.reposearchapp.R
@@ -29,7 +32,16 @@ class IssueOptionAdapter(
 
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return convertView ?: layoutInflater.inflate(R.layout.header_issue_option, parent, false)
+        val view =
+            convertView ?: layoutInflater.inflate(R.layout.header_issue_option, parent, false)
+
+        val title = view.findViewById<TextView>(R.id.tv_option_title)
+        title.text = context.getString(getItem(position).optionName)
+
+        val icon = view.findViewById<ImageView>(R.id.img_option)
+        icon.stateListAnimator =
+            AnimatorInflater.loadStateListAnimator(context, R.xml.anim_spinner_click)
+        return view
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View =

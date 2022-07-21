@@ -3,14 +3,19 @@ package com.example.reposearchapp.presentation.home.issue
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentIssueBinding
 import com.example.reposearchapp.model.issue.IssueType
 import com.example.reposearchapp.presentation.adapter.issue.IssueListAdapter
 import com.example.reposearchapp.presentation.adapter.issue.IssueOptionAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
+import com.example.reposearchapp.util.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -23,6 +28,17 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
 
     private lateinit var issueListAdapter: IssueListAdapter
     private lateinit var issueOptionListAdapter: IssueOptionAdapter
+
+    private val issueLoadStateListenr = { loadStates: CombinedLoadStates ->
+        binding.apply {
+            progressInit.isVisible = loadStates.refresh is LoadState.Loading
+            progressPaging.isVisible = loadStates.append is LoadState.Loading
+        }
+
+        if (loadStates.refresh is LoadState.Error || loadStates.append is LoadState.Error) {
+            handleError()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,6 +72,8 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
             issueListAdapter.refresh()
             swipeRefreshLayout.isRefreshing = false
         }
+
+        issueListAdapter.addLoadStateListener(issueLoadStateListenr)
     }
 
     private fun observeIssue() {
@@ -63,8 +81,8 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
             when (it) {
                 IssueState.UnInitialState -> {}
                 IssueState.Loading -> handleLoading()
-                IssueState.FetchFinish -> {}
-                is IssueState.Error -> handleError(it)
+                IssueState.FetchFinish -> handleSuccess()
+                is IssueState.Error -> handleError()
             }
         }
         // paging data
@@ -75,14 +93,15 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
         }
     }
 
-    private fun handleLoading() {
-
+    private fun handleLoading() {}
+    private fun handleSuccess() {}
+    private fun handleError() {
+        showSnackBar(binding.root, requireContext().getString(R.string.error_issue_list))
     }
 
-    private fun handleSuccess() {
-    }
-
-    private fun handleError(state: IssueState.Error) {
+    override fun onDestroyView() {
+        issueListAdapter.removeLoadStateListener(issueLoadStateListenr)
+        super.onDestroyView()
     }
 
     companion object {

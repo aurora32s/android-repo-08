@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="16dp">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
@@ -26,6 +27,26 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_init"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:indeterminateTint="@color/primary"
+            app:layout_constraintBottom_toBottomOf="@id/swipe_refresh_layout"
+            app:layout_constraintEnd_toEndOf="@id/swipe_refresh_layout"
+            app:layout_constraintStart_toStartOf="@id/swipe_refresh_layout"
+            app:layout_constraintTop_toTopOf="@id/swipe_refresh_layout" />
+
+        <ProgressBar
+            android:id="@+id/progress_paging"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="15dp"
+            android:indeterminateTint="@color/primary"
+            app:layout_constraintBottom_toBottomOf="@id/swipe_refresh_layout"
+            app:layout_constraintEnd_toEndOf="@id/swipe_refresh_layout"
+            app:layout_constraintStart_toStartOf="@id/swipe_refresh_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

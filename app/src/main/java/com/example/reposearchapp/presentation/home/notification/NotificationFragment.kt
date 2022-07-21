@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Adapter
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentNotificationBinding
 import com.example.reposearchapp.presentation.adapter.notification.NotificationAdapter
 import com.example.reposearchapp.presentation.adapter.notification.NotificationItemSwipeHelper
 import com.example.reposearchapp.presentation.base.BaseFragment
+import com.example.reposearchapp.util.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -24,6 +28,17 @@ class NotificationFragment :
     private val viewModel: NotificationViewModel by viewModels()
 
     private lateinit var notificationAdapter: NotificationAdapter
+
+    private val notificationLoadStateListener = { loadStates: CombinedLoadStates ->
+        binding.apply {
+            progressInit.isVisible = loadStates.refresh is LoadState.Loading
+            progressPaging.isVisible = loadStates.append is LoadState.Loading
+        }
+
+        if (loadStates.refresh is LoadState.Error || loadStates.append is LoadState.Error) {
+            handleError()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,6 +69,8 @@ class NotificationFragment :
             notificationAdapter.refresh()
             swipeRefreshLayout.isRefreshing = false
         }
+
+        notificationAdapter.addLoadStateListener(notificationLoadStateListener)
     }
 
     private fun observeNotification() =
@@ -62,14 +79,12 @@ class NotificationFragment :
                 NotificationState.UnInitialState -> viewModel.getNotifications()
                 NotificationState.Loading -> handleLoading()
                 NotificationState.FetchFinish -> handleSuccess()
-                is NotificationState.Error -> handleError(it)
+                is NotificationState.Error -> handleError()
                 NotificationState.SuccessRead -> handleSuccessRead()
             }
         }
 
-    private fun handleLoading() {
-
-    }
+    private fun handleLoading() {}
 
     private fun handleSuccess() {
         // notification paging data
@@ -80,12 +95,17 @@ class NotificationFragment :
         }
     }
 
-    private fun handleError(state: NotificationState.Error) {
-
+    private fun handleError() {
+        showSnackBar(binding.root, requireContext().getString(R.string.error_notification_list))
     }
 
     private fun handleSuccessRead() {
         notificationAdapter.refresh()
+    }
+
+    override fun onDestroyView() {
+        notificationAdapter.removeLoadStateListener(notificationLoadStateListener)
+        super.onDestroyView()
     }
 
     companion object {

@@ -14,11 +14,11 @@ interface GithubApi {
     /**
      * state 에 맞는 이슈 정보들 요청
      */
-    @GET("/issues")
+    @GET("/user/issues")
     suspend fun getIssues(
         @Query("state") state: String,
         @Query("page") page: Int,
-        @Query("per_page") perPage: Int = 20,
+        @Query("per_page") perPage: Int,
     ): Response<List<Issue>>
 
     /**
