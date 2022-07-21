@@ -29,7 +29,7 @@ class NotificationFragment :
 
     private lateinit var notificationAdapter: NotificationAdapter
 
-    private val nofitifcationLoadStateListenr = { loadStates: CombinedLoadStates ->
+    private val notificationLoadStateListener = { loadStates: CombinedLoadStates ->
         binding.apply {
             progressInit.isVisible = loadStates.refresh is LoadState.Loading
             progressPaging.isVisible = loadStates.append is LoadState.Loading
@@ -70,16 +70,7 @@ class NotificationFragment :
             swipeRefreshLayout.isRefreshing = false
         }
 
-        notificationAdapter.addLoadStateListener { loadStates ->
-            binding.apply {
-                progressInit.isVisible = loadStates.refresh is LoadState.Loading
-                progressPaging.isVisible = loadStates.append is LoadState.Loading
-            }
-
-            if (loadStates.refresh is LoadState.Error || loadStates.append is LoadState.Error) {
-                handleError()
-            }
-        }
+        notificationAdapter.addLoadStateListener(notificationLoadStateListener)
     }
 
     private fun observeNotification() =
@@ -113,7 +104,7 @@ class NotificationFragment :
     }
 
     override fun onDestroyView() {
-        notificationAdapter.removeLoadStateListener(nofitifcationLoadStateListenr)
+        notificationAdapter.removeLoadStateListener(notificationLoadStateListener)
         super.onDestroyView()
     }
 
