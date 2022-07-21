@@ -40,7 +40,7 @@ class IssueOptionAdapter(
                 val issueType = getItem(position)
                 tvIssueType.text = context.getString(issueType.optionName)
 
-                val isSelected = issueType == viewModel.issueType
+                val isSelected = issueType == viewModel.issueType.value
                 tvIssueType.setTextColor(
                     ContextCompat.getColor(
                         context,
