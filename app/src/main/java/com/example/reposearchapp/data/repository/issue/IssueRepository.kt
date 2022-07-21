@@ -24,6 +24,6 @@ class IssueRepository @Inject constructor(
     }
 
     companion object {
-        const val PER_PAGE = 20
+        const val PER_PAGE = 30
     }
 }
