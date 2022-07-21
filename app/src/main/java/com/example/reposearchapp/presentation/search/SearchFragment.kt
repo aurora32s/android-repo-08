@@ -76,6 +76,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 adapter.loadStateFlow.collect {
                     val isListEmpty = it.refresh is LoadState.NotLoading && adapter.itemCount == 0
                     binding.groupSearchInfo.isVisible = isListEmpty
+                    binding.progressBar.isVisible = it.refresh is LoadState.Loading
                 }
             }
         }
