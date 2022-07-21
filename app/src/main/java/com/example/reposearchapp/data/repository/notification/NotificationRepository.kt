@@ -1,20 +1,16 @@
 package com.example.reposearchapp.data.repository.notification
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.reposearchapp.data.Result
 import com.example.reposearchapp.data.entity.notification.Notification
-import com.example.reposearchapp.data.remote.GitApiService
-import com.example.reposearchapp.data.safeApiCall
-import com.example.reposearchapp.di.provideGitApiService
-import kotlinx.coroutines.*
+import com.example.reposearchapp.data.remote.GithubApi
 import kotlinx.coroutines.flow.Flow
 import java.lang.Exception
+import javax.inject.Inject
 
-class NotificationRepository(
-    private val gitApiService: GitApiService = provideGitApiService()
+class NotificationRepository @Inject constructor(
+    private val gitApiService: GithubApi
 ) {
 
     /**

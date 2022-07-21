@@ -4,12 +4,11 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.reposearchapp.data.Result
 import com.example.reposearchapp.data.entity.issue.Issue
-import com.example.reposearchapp.data.remote.GitApiService
+import com.example.reposearchapp.data.remote.GithubApi
 import com.example.reposearchapp.data.safeApiCall
-import com.example.reposearchapp.di.provideGitApiService
 
 class IssuePagingSource(
-    private val gitApiService: GitApiService = provideGitApiService(),
+    private val githubApi: GithubApi,
     private val state: String,
     private val perPage: Int,
 ) : PagingSource<Int, Issue>() {
@@ -19,7 +18,7 @@ class IssuePagingSource(
 
         return when (val result =
             safeApiCall {
-                gitApiService.getIssues(
+                githubApi.getIssues(
                     state = state,
                     page = page,
                     perPage = perPage

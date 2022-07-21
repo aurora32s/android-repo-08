@@ -12,14 +12,15 @@ import com.example.reposearchapp.databinding.FragmentNotificationBinding
 import com.example.reposearchapp.presentation.adapter.notification.NotificationAdapter
 import com.example.reposearchapp.presentation.adapter.notification.NotificationItemSwipeHelper
 import com.example.reposearchapp.presentation.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class NotificationFragment :
     BaseFragment<FragmentNotificationBinding>(R.layout.fragment_notification) {
 
-    // TODO 의존성 주입으로 수정할 예정
     private val viewModel: NotificationViewModel by viewModels()
 
     private lateinit var notificationAdapter: NotificationAdapter

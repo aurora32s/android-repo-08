@@ -13,17 +13,19 @@ import com.example.reposearchapp.data.entity.issue.Issue
 import com.example.reposearchapp.data.repository.issue.IssueRepository
 import com.example.reposearchapp.model.issue.IssueModel
 import com.example.reposearchapp.model.issue.IssueType
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import javax.inject.Inject
 
-class IssueViewModel(
-    private val issueRepository: IssueRepository = IssueRepository()
+@HiltViewModel
+class IssueViewModel @Inject constructor(
+    private val issueRepository: IssueRepository
 ) : ViewModel() {
 
     private val _issueStateLiveData = MutableLiveData<IssueState>(IssueState.UnInitialState)
 
-    // TODO liveData로 데이터 타입을 지정해주어야 LiveData 로 넣을 수 있습니다.
     val issueStateLiveData: LiveData<IssueState>
         get() = _issueStateLiveData
 

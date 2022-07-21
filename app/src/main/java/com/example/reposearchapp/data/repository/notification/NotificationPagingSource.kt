@@ -4,15 +4,14 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.reposearchapp.data.Result
 import com.example.reposearchapp.data.entity.notification.Notification
-import com.example.reposearchapp.data.remote.GitApiService
+import com.example.reposearchapp.data.remote.GithubApi
 import com.example.reposearchapp.data.safeApiCall
-import com.example.reposearchapp.di.provideGitApiService
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 
 class NotificationPagingSource(
-    private val gitApiService: GitApiService = provideGitApiService(),
+    private val gitApiService: GithubApi,
     private val perPage: Int
 ) : PagingSource<Int, Notification>() {
 
