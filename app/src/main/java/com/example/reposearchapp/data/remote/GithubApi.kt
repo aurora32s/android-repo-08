@@ -48,7 +48,6 @@ interface GithubApi {
         @Query("page") page: Int
     ): Response<RepoResponse>
 
-    @Headers("Accept: application/json")
     @GET("user")
     suspend fun getUser(): Response<UserResponse>
 

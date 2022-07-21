@@ -15,46 +15,18 @@
         <item name="android:windowBackground">@color/background</item>
     </style>
 
-    <style name="label">
-
-        <item name="android:textSize">
-            40sp
-        </item>
-
-        <item name="android:letterSpacing">
-            0.02
-        </item>
-
-        <item name="android:textColor">
-            #FFFFFF
-        </item>
-
+    <!-- login -->
+    <style name="loginLabel">
+        <item name="android:textSize">40sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="grayContent">
-
-        <item name="android:textSize">
-            14sp
-        </item>
-
-        <item name="android:textColor">
-            @color/gray
-        </item>
-
-    </style>
-
+    <!-- search -->
     <style name="searchLabel">
-        <item name="android:textSize">
-            16sp
-        </item>
-
-        <item name="android:letterSpacing">
-            0.05
-        </item>
-
-        <item name="android:textColor">
-            #FFFFFF
-        </item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
@@ -66,39 +38,26 @@
         <item name="android:tint">@color/white</item>
     </style>
 
-    <style name="displayname">
+    <!-- profile -->
+    <style name="profileDisplayName">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-        <item name="android:textSize">
-            18sp
-        </item>
 
-        <item name="android:textColor">
-            #FFFFFF
-        </item>
-
+    <style name="grayContent">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 
     <style name="whiteContent">
-
-        <item name="android:textSize">
-            14sp
-        </item>
-
-        <item name="android:textColor">
-            #FFFFFF
-        </item>
-
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="whiteBoldContent">
-
-        <item name="android:textSize">
-            14sp
-        </item>
-
-        <item name="android:textColor">
-            #FFFFFF
-        </item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
 </resources>

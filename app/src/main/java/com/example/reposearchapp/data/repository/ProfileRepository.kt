@@ -6,6 +6,7 @@ import com.example.reposearchapp.data.remote.GithubApi
 import com.example.reposearchapp.data.safeApiCall
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.isActive
 import javax.inject.Inject
 
 class ProfileRepository @Inject constructor(
@@ -21,7 +22,7 @@ class ProfileRepository @Inject constructor(
                 coroutineScope {
                     var totalStarCount = 0
                     var page = 0
-                    while (true) {
+                    while (isActive) {
                         val star = async { githubApi.getStarsByUser(page) }
                         page++
                         try {

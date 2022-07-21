@@ -12,7 +12,7 @@
         android:paddingHorizontal="24dp">
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/label"
+            style="@style/loginLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_label_marginTop"
