@@ -9,7 +9,7 @@ data class UserModel(
     val email: String?,
     val followers: Int,
     val following: Int,
-    val location: String,
+    val location: String?,
     val reposCount: Int,
     val starredCount: Int
 )
