@@ -64,7 +64,8 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
 
         issueListAdapter.addLoadStateListener { loadStates ->
             binding.apply {
-                progressInit.isVisible = loadStates.source.refresh is LoadState.Loading
+                progressInit.isVisible = loadStates.refresh is LoadState.Loading
+                progressPaging.isVisible = loadStates.append is LoadState.Loading
             }
         }
     }
