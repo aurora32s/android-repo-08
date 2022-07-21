@@ -6,7 +6,6 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,7 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentSearchBinding
-import com.example.reposearchapp.presentation.adapter.RepoAdapter
+import com.example.reposearchapp.presentation.adapter.search.RepoAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
 import com.example.reposearchapp.util.KeyboardUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,9 +72,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         }
 
         lifecycleScope.launch {
-            adapter.loadStateFlow.collect {
-                val isListEmpty = it.refresh is LoadState.NotLoading && adapter.itemCount == 0
-                binding.groupSearchInfo.isVisible = isListEmpty
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                adapter.loadStateFlow.collect {
+                    val isListEmpty = it.refresh is LoadState.NotLoading && adapter.itemCount == 0
+                    binding.groupSearchInfo.isVisible = isListEmpty
+                }
             }
         }
     }

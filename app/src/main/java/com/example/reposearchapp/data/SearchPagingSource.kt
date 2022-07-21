@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.reposearchapp.data.entity.search.Item
 import com.example.reposearchapp.data.remote.GithubApi
-import com.example.reposearchapp.data.repository.search.NETWORK_PAGE_SIZE
 
 class SearchPagingSource(
     private val query: String,

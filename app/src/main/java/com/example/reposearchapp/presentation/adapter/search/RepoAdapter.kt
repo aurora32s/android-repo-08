@@ -1,4 +1,4 @@
-package com.example.reposearchapp.presentation.adapter
+package com.example.reposearchapp.presentation.adapter.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.reposearchapp.R
 import com.example.reposearchapp.model.search.RepoItemModel
 import com.example.reposearchapp.databinding.ItemRepoBinding
-import com.example.reposearchapp.presentation.adapter.search.RepoViewHolder
 
 class RepoAdapter : PagingDataAdapter<RepoItemModel, RepoViewHolder>(RepoDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
