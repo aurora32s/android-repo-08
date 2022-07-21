@@ -39,7 +39,6 @@ class NotificationFragment :
         val notificationSwipeHelper = NotificationItemSwipeHelper(requireContext())
         notificationSwipeHelper.setOnSwipedListener { position ->
             val notificationModel = notificationAdapter.getItemByPosition(position)
-            println(notificationModel.toString())
             notificationModel?.let {
                 viewModel.readNotification(it)
             }
