@@ -72,6 +72,10 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
             viewModel.getIssues().collectLatest {
                 issueListAdapter.submitData(it)
             }
+
+            viewModel.issueType.collectLatest {
+                binding.spinnerIssueOption.prompt = requireContext().getString(it.optionName)
+            }
         }
     }
 

@@ -6,9 +6,9 @@
     android:background="@drawable/background_issue_filter_unfocused">
 
     <TextView
+        android:id="@+id/tv_option_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_option"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
