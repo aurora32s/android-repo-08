@@ -48,6 +48,11 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
                 else R.drawable.background_issue_filter_unfocused
             )
         }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            issueListAdapter.refresh()
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun observeIssue() {
@@ -61,7 +66,9 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
         }
         // paging data
         lifecycleScope.launch {
-            viewModel.getIssues().collectLatest { issueListAdapter.submitData(it) }
+            viewModel.getIssues().collectLatest {
+                issueListAdapter.submitData(it)
+            }
         }
     }
 
