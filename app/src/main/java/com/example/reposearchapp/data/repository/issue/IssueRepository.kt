@@ -1,13 +1,15 @@
 package com.example.reposearchapp.data.repository.issue
 
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.reposearchapp.data.entity.issue.Issue
-import com.example.reposearchapp.data.remote.GitApiService
-import com.example.reposearchapp.di.provideGitApiService
+import com.example.reposearchapp.data.remote.GithubApi
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class IssueRepository(
-    private val gitApiService: GitApiService = provideGitApiService()
+class IssueRepository @Inject constructor(
+    private val githubApi: GithubApi
 ) {
 
     /**
@@ -17,7 +19,7 @@ class IssueRepository(
     fun getIssuesByPaging(state: String): Flow<PagingData<Issue>> {
         return Pager(
             config = PagingConfig(pageSize = PER_PAGE),
-            pagingSourceFactory = { IssuePagingSource(gitApiService, state, PER_PAGE) }
+            pagingSourceFactory = { IssuePagingSource(githubApi, state, PER_PAGE) }
         ).flow
     }
 

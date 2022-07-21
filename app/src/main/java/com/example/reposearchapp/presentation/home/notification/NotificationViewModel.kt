@@ -6,17 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.filter
 import androidx.paging.map
 import com.example.reposearchapp.R
 import com.example.reposearchapp.data.repository.notification.NotificationRepository
 import com.example.reposearchapp.model.notification.NotificationModel
-import com.example.reposearchapp.presentation.home.issue.IssueState
-import kotlinx.coroutines.flow.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NotificationViewModel(
-    private val notificationRepository: NotificationRepository = NotificationRepository()
+@HiltViewModel
+class NotificationViewModel @Inject constructor(
+    private val notificationRepository: NotificationRepository
 ) : ViewModel() {
 
     private val _notificationStateLiveData =

@@ -11,9 +11,11 @@ import com.example.reposearchapp.model.issue.IssueType
 import com.example.reposearchapp.presentation.adapter.issue.IssueListAdapter
 import com.example.reposearchapp.presentation.adapter.issue.IssueOptionAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue) {
 
     // TODO 의존성 주입으로 수정할 예정

@@ -4,7 +4,9 @@ import android.content.Context
 import com.example.reposearchapp.data.remote.AccessApi
 import com.example.reposearchapp.data.remote.GithubApi
 import com.example.reposearchapp.data.repository.ProfileRepository
+import com.example.reposearchapp.data.repository.issue.IssueRepository
 import com.example.reposearchapp.data.repository.login.AccessTokenRepository
+import com.example.reposearchapp.data.repository.notification.NotificationRepository
 import com.example.reposearchapp.data.repository.search.SearchRepository
 import com.example.reposearchapp.util.GithubLanguageColorUtil
 import dagger.Module
@@ -24,18 +26,26 @@ object RepositoryModule {
     fun provideAccessTokenRepository(
         @ApplicationContext application: Context,
         accessApi: AccessApi
-    ): AccessTokenRepository {
-        return AccessTokenRepository(application, accessApi)
-    }
+    ) = AccessTokenRepository(application, accessApi)
+
+    @Singleton
+    @Provides
+    fun provideIssueRepository(
+        githubApi: GithubApi
+    ) = IssueRepository(githubApi)
+
+    @Singleton
+    @Provides
+    fun provideNotificationRepository(
+        githubApi: GithubApi
+    ) = NotificationRepository(githubApi)
 
     @Singleton
     @Provides
     fun provideSearchRepository(
         githubLanguageColorUtil: GithubLanguageColorUtil,
         githubApi: GithubApi
-    ): SearchRepository {
-        return SearchRepository(githubLanguageColorUtil, githubApi)
-    }
+    ) = SearchRepository(githubLanguageColorUtil, githubApi)
 
     @Singleton
     @Provides
