@@ -14,6 +14,7 @@ class SearchPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Item> {
         val start = params.key ?: STARTING_KEY
 
+        println(params.loadSize / NETWORK_PAGE_SIZE)
         when (val result = safeApiCall { githubApi.getRepos(query, start) }) {
             is Result.Success -> {
                 return LoadResult.Page(
@@ -22,7 +23,8 @@ class SearchPagingSource(
                         STARTING_KEY -> null
                         else -> start - 1
                     },
-                    nextKey = start + (params.loadSize / NETWORK_PAGE_SIZE)
+                    nextKey = if (result.data.items.isEmpty()) null
+                    else start + (params.loadSize / NETWORK_PAGE_SIZE)
                 )
             }
 
@@ -40,6 +42,6 @@ class SearchPagingSource(
     }
 
     companion object {
-        const val STARTING_KEY = 0
+        const val STARTING_KEY = 1
     }
 }
