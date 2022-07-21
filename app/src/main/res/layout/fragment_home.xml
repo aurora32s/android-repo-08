@@ -60,7 +60,7 @@
             app:tabBackground="@drawable/tabs_selector"
             app:tabIndicatorHeight="0dp"
             app:tabTextColor="@color/white" />
-        
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="0dp"

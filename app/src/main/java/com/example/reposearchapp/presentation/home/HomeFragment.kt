@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.reposearchapp.R
+import com.example.reposearchapp.data.entity.issue.Issue
 import com.example.reposearchapp.databinding.FragmentHomeBinding
 import com.example.reposearchapp.model.home.TabType
 import com.example.reposearchapp.presentation.adapter.home.HomeViewPagerAdapter
@@ -20,6 +21,9 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+
+    // tab 에 보여지는
+    private val tabTitleList = listOf(R.string.text_tab_issue, R.string.text_tab_noti)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,10 +41,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun bindViews() = with(binding) {
         viewPager.adapter = HomeViewPagerAdapter(
             this@HomeFragment,
-            TabType.values().map { it.fragment }
+            listOf(
+                IssueFragment.newInstance(),
+                NotificationFragment.newInstance()
+            )
         )
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = requireContext().getString(TabType.values()[position].tabName)
+            tab.text = requireContext().getString(tabTitleList[position])
         }.attach()
     }
 
@@ -54,14 +61,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
-    enum class TabType(
-        @StringRes
-        val tabName: Int,
-        val fragment: Fragment
-    ) {
-        ISSUE(R.string.text_tab_issue, IssueFragment.newInstance()),
-        NOTIFICATION(R.string.text_tab_noti, NotificationFragment.newInstance())
-    }
+//    private enum class TabType(
+//        @StringRes
+//        val tabName: Int,
+//        val fragment: Fragment
+//    ) {
+//        ISSUE(R.string.text_tab_issue, IssueFragment.newInstance()),
+//        NOTIFICATION(R.string.text_tab_noti, NotificationFragment.newInstance())
+//    }
 
     companion object {
         const val TAG = "HomeFragment"
