@@ -2,15 +2,10 @@ package com.example.reposearchapp.presentation.home
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import com.example.reposearchapp.R
-import com.example.reposearchapp.data.entity.issue.Issue
 import com.example.reposearchapp.databinding.FragmentHomeBinding
-import com.example.reposearchapp.model.home.TabType
 import com.example.reposearchapp.presentation.adapter.home.HomeViewPagerAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
 import com.example.reposearchapp.presentation.home.issue.IssueFragment
@@ -20,7 +15,6 @@ import com.example.reposearchapp.presentation.profile.ProfileUiState
 import com.example.reposearchapp.presentation.profile.ProfileViewModel
 import com.example.reposearchapp.presentation.search.SearchFragment
 import com.example.reposearchapp.util.setCircleImageFromImageUrl
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -65,19 +59,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         profileViewModel.profileUiState.observe(viewLifecycleOwner) {
             when (it) {
                 is ProfileUiState.Loading -> {
-
+                }
                 is ProfileUiState.Success -> {
                     binding.ivProfile.setCircleImageFromImageUrl(it.user.avatarUrl)
                 }
-                    binding.ivProfile.setCircleImageFromImageUrl(it.user.avatarUrl)
                 is ProfileUiState.Error -> {
                     println(it.message)
-                }
                 }
             }
         }
     }
-    
+
     private fun navigateToProfileFragment() {
         parentFragmentManager.commit {
             setReorderingAllowed(true)
