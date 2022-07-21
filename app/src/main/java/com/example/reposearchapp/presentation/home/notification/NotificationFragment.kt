@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Adapter
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentNotificationBinding
@@ -53,6 +55,13 @@ class NotificationFragment :
         swipeRefreshLayout.setOnRefreshListener {
             notificationAdapter.refresh()
             swipeRefreshLayout.isRefreshing = false
+        }
+
+        notificationAdapter.addLoadStateListener { loadStates ->
+            binding.apply {
+                progressInit.isVisible = loadStates.refresh is LoadState.Loading
+                progressPaging.isVisible = loadStates.append is LoadState.Loading
+            }
         }
     }
 
