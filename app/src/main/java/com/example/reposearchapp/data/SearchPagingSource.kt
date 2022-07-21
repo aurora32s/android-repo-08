@@ -27,7 +27,6 @@ class SearchPagingSource(
             }
 
             is Result.Error -> {
-                println(result.exception)
                 return LoadResult.Error(Exception(result.exception))
             }
         }
