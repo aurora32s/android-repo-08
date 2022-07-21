@@ -10,9 +10,10 @@ data class NotificationModel(
     val title: String,
     val type: String,
     val number: String,
-    val threadId: String,
+    val threadId: Long,
     val avatarUrl: String?,
-    val updatedAt: String
+    val updatedAt: String,
+    val commentsNum: Int
 ) {
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<NotificationModel>() {

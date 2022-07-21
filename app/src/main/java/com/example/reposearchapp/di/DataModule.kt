@@ -1,35 +1,26 @@
 package com.example.reposearchapp.di
 
-import android.app.Application
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStoreFile
+import com.example.reposearchapp.data.remote.AccessApi
+import com.example.reposearchapp.data.remote.GithubApi
+import com.example.reposearchapp.data.remote.GithubServiceInterceptor
 import com.example.reposearchapp.data.repository.AccessTokenRepository
-import com.example.reposearchapp.data.repository.AccessTokenRepository.Companion.ACCESS_TOKEN_DATA_STORE
 import com.example.reposearchapp.data.repository.SearchRepository
 import com.example.reposearchapp.util.GithubLanguageColorUtil
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import retrofit2.Converter
+import retrofit2.Retrofit
+import javax.inject.Qualifier
 import javax.inject.Singleton
-
-@InstallIn(SingletonComponent::class)
-@Module
-object DataStoreModule {
-
-    @Singleton
-    @Provides
-    fun provideAccessTokenPreferencesDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create(
-            produceFile = { appContext.preferencesDataStoreFile(ACCESS_TOKEN_DATA_STORE) }
-        )
-    }
-}
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -38,17 +29,19 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideAccessTokenRepository(
-        dataStore: DataStore<Preferences>
+        @ApplicationContext application: Context,
+        accessApi: AccessApi
     ): AccessTokenRepository {
-        return AccessTokenRepository(dataStore)
+        return AccessTokenRepository(application, accessApi)
     }
 
     @Singleton
     @Provides
     fun provideSearchRepository(
-        githubLanguageColorUtil: GithubLanguageColorUtil
+        githubLanguageColorUtil: GithubLanguageColorUtil,
+        githubApi: GithubApi
     ): SearchRepository {
-        return SearchRepository(githubLanguageColorUtil)
+        return SearchRepository(githubLanguageColorUtil, githubApi)
     }
 }
 
