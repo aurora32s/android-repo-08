@@ -46,6 +46,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     private fun searchRepo(query: String): Flow<PagingData<RepoItemModel>> =
         searchRepository.search(query)
+
 }
 
 sealed class UiAction {

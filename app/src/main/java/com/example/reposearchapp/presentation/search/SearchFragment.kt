@@ -7,6 +7,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -17,12 +18,13 @@ import com.example.reposearchapp.databinding.FragmentSearchBinding
 import com.example.reposearchapp.presentation.adapter.RepoAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
 import com.example.reposearchapp.util.KeyboardUtil
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
-    private val searchViewModel by activityViewModels<SearchViewModel>()
+    private val searchViewModel by viewModels<SearchViewModel>()
     private lateinit var adapter: RepoAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
