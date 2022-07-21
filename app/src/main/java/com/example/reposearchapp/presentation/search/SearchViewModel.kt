@@ -29,13 +29,14 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
             .filterIsInstance<UiAction.Search>()
             .distinctUntilChanged()
             .debounce(400L)
-            .onStart { emit(UiAction.Search(query = "")) }
 
         pagingDataFlow = searches
             .flatMapLatest {
-                if (it.query.isBlank())
+                if (it.query.isBlank()) {
                     flowOf(PagingData.empty())
-                else searchRepo(query = it.query)
+                } else {
+                    searchRepo(query = it.query)
+                }
             }
             .cachedIn(viewModelScope)
 
