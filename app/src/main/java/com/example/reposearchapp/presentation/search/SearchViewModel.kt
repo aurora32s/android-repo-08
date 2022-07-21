@@ -33,7 +33,9 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
         pagingDataFlow = searches
             .flatMapLatest {
-                searchRepo(query = it.query)
+                if (it.query.isBlank())
+                    flowOf(PagingData.empty())
+                else searchRepo(query = it.query)
             }
             .cachedIn(viewModelScope)
 

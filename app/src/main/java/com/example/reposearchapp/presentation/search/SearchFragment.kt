@@ -12,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentSearchBinding
 import com.example.reposearchapp.presentation.adapter.RepoAdapter
@@ -49,13 +48,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText.isNullOrBlank()) {
-                        lifecycleScope.launch {
-                            adapter.submitData(PagingData.empty())
-                        }
-                    } else {
-                        searchViewModel.uiAction(UiAction.Search(query = newText))
-                    }
+                    searchViewModel.uiAction(UiAction.Search(query = newText ?: ""))
 
                     return true
                 }
