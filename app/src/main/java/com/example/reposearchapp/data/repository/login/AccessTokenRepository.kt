@@ -1,4 +1,4 @@
-package com.example.reposearchapp.data.repository
+package com.example.reposearchapp.data.repository.login
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,7 +6,7 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.example.reposearchapp.BuildConfig
 import com.example.reposearchapp.data.Result
-import com.example.reposearchapp.data.entity.AccessTokenRequest
+import com.example.reposearchapp.data.entity.login.AccessTokenRequest
 import com.example.reposearchapp.data.remote.AccessApi
 import com.example.reposearchapp.data.safeApiCall
 import com.example.reposearchapp.util.Event
