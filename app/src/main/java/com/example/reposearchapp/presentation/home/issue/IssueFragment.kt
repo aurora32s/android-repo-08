@@ -14,6 +14,7 @@ import com.example.reposearchapp.model.issue.IssueType
 import com.example.reposearchapp.presentation.adapter.issue.IssueListAdapter
 import com.example.reposearchapp.presentation.adapter.issue.IssueOptionAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
+import com.example.reposearchapp.util.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -67,6 +68,10 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
                 progressInit.isVisible = loadStates.refresh is LoadState.Loading
                 progressPaging.isVisible = loadStates.append is LoadState.Loading
             }
+
+            if (loadStates.refresh is LoadState.Error || loadStates.append is LoadState.Error) {
+                handleError()
+            }
         }
     }
 
@@ -75,8 +80,8 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
             when (it) {
                 IssueState.UnInitialState -> {}
                 IssueState.Loading -> handleLoading()
-                IssueState.FetchFinish -> {}
-                is IssueState.Error -> handleError(it)
+                IssueState.FetchFinish -> handleSuccess()
+                is IssueState.Error -> handleError()
             }
         }
         // paging data
@@ -87,14 +92,10 @@ class IssueFragment : BaseFragment<FragmentIssueBinding>(R.layout.fragment_issue
         }
     }
 
-    private fun handleLoading() {
-
-    }
-
-    private fun handleSuccess() {
-    }
-
-    private fun handleError(state: IssueState.Error) {
+    private fun handleLoading() {}
+    private fun handleSuccess() {}
+    private fun handleError() {
+        showSnackBar(binding.root, requireContext().getString(R.string.error_issue_list))
     }
 
     companion object {

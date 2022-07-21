@@ -14,6 +14,7 @@ import com.example.reposearchapp.databinding.FragmentNotificationBinding
 import com.example.reposearchapp.presentation.adapter.notification.NotificationAdapter
 import com.example.reposearchapp.presentation.adapter.notification.NotificationItemSwipeHelper
 import com.example.reposearchapp.presentation.base.BaseFragment
+import com.example.reposearchapp.util.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -62,6 +63,10 @@ class NotificationFragment :
                 progressInit.isVisible = loadStates.refresh is LoadState.Loading
                 progressPaging.isVisible = loadStates.append is LoadState.Loading
             }
+
+            if (loadStates.refresh is LoadState.Error || loadStates.append is LoadState.Error) {
+                handleError()
+            }
         }
     }
 
@@ -71,14 +76,12 @@ class NotificationFragment :
                 NotificationState.UnInitialState -> viewModel.getNotifications()
                 NotificationState.Loading -> handleLoading()
                 NotificationState.FetchFinish -> handleSuccess()
-                is NotificationState.Error -> handleError(it)
+                is NotificationState.Error -> handleError()
                 NotificationState.SuccessRead -> handleSuccessRead()
             }
         }
 
-    private fun handleLoading() {
-
-    }
+    private fun handleLoading() {}
 
     private fun handleSuccess() {
         // notification paging data
@@ -89,8 +92,8 @@ class NotificationFragment :
         }
     }
 
-    private fun handleError(state: NotificationState.Error) {
-
+    private fun handleError() {
+        showSnackBar(binding.root, requireContext().getString(R.string.error_notification_list))
     }
 
     private fun handleSuccessRead() {
