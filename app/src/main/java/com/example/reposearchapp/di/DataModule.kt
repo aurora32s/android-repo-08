@@ -3,6 +3,7 @@ package com.example.reposearchapp.di
 import android.content.Context
 import com.example.reposearchapp.data.remote.AccessApi
 import com.example.reposearchapp.data.remote.GithubApi
+import com.example.reposearchapp.data.repository.ProfileRepository
 import com.example.reposearchapp.data.repository.login.AccessTokenRepository
 import com.example.reposearchapp.data.repository.search.SearchRepository
 import com.example.reposearchapp.util.GithubLanguageColorUtil
@@ -35,6 +36,12 @@ object RepositoryModule {
     ): SearchRepository {
         return SearchRepository(githubLanguageColorUtil, githubApi)
     }
+
+    @Singleton
+    @Provides
+    fun provideProfileRepository(
+        githubApi: GithubApi
+    ) = ProfileRepository(githubApi)
 }
 
 @Module

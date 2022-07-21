@@ -33,4 +33,10 @@
     <string name="login_fail">로그인 실패 %s</string>
     <string name="content_search">Search all of GitHunb for People, Repositories, Organizations, Issues, \nand Pull Requests.</string>
     <string name="label_search">Find Your Stuff</string>
+
+    <!-- profile -->
+    <string name="profile_repository">Repositories</string>
+    <string name="profile_starred">Starred</string>
+    <string name="profile_follower">%d Followers</string>
+    <string name="profile_following">%d Following</string>
 </resources>
