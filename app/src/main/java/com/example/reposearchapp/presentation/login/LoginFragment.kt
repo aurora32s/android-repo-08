@@ -19,6 +19,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                 .appendPath("oauth")
                 .appendPath("authorize")
                 .appendQueryParameter("client_id", BuildConfig.GITHUB_CLIENT_ID)
+                .appendQueryParameter("scope", "user,repo,notifications")
                 .build()
 
             val intent = Intent(Intent.ACTION_VIEW, loginUrl)

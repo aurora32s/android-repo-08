@@ -85,9 +85,9 @@
             app:layout_constraintTop_toBottomOf="@id/tv_search_label" />
 
         <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_search_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{vm.repoList.size() == 0 ? View.VISIBLE : View.INVISIBLE}"
             app:constraint_referenced_ids="tv_search_label, tv_search_label_content" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,7 +2,7 @@ package com.example.reposearchapp.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.reposearchapp.data.repository.AccessTokenRepository
+import com.example.reposearchapp.data.repository.login.AccessTokenRepository
 import com.example.reposearchapp.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

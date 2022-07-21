@@ -8,7 +8,7 @@
 
         <variable
             name="item"
-            type="com.example.reposearchapp.data.RepoItemModel" />
+            type="com.example.reposearchapp.model.search.RepoItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

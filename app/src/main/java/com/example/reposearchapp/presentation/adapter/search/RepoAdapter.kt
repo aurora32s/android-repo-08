@@ -1,15 +1,15 @@
-package com.example.reposearchapp.presentation.adapter
+package com.example.reposearchapp.presentation.adapter.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import com.example.reposearchapp.R
-import com.example.reposearchapp.data.RepoItemModel
+import com.example.reposearchapp.model.search.RepoItemModel
 import com.example.reposearchapp.databinding.ItemRepoBinding
 
-class RepoAdapter : ListAdapter<RepoItemModel, RepoViewHolder>(RepoDiffCallback()) {
+class RepoAdapter : PagingDataAdapter<RepoItemModel, RepoViewHolder>(RepoDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
         val binding = DataBindingUtil.inflate<ItemRepoBinding>(
             LayoutInflater.from(parent.context),
@@ -21,7 +21,7 @@ class RepoAdapter : ListAdapter<RepoItemModel, RepoViewHolder>(RepoDiffCallback(
     }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        getItem(position)?.let { holder.bind(it) }
     }
 }
 

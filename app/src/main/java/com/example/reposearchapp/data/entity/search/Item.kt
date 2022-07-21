@@ -1,6 +1,6 @@
-package com.example.reposearchapp.data.entity
+package com.example.reposearchapp.data.entity.search
 
-import com.example.reposearchapp.data.RepoItemModel
+import com.example.reposearchapp.model.search.RepoItemModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

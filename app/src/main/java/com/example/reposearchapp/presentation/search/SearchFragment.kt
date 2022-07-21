@@ -5,16 +5,24 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.doOnLayout
-import androidx.fragment.app.activityViewModels
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import com.example.reposearchapp.R
 import com.example.reposearchapp.databinding.FragmentSearchBinding
-import com.example.reposearchapp.presentation.adapter.RepoAdapter
+import com.example.reposearchapp.presentation.adapter.search.RepoAdapter
 import com.example.reposearchapp.presentation.base.BaseFragment
 import com.example.reposearchapp.util.KeyboardUtil
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
-    private val searchViewModel by activityViewModels<SearchViewModel>()
+    private val searchViewModel by viewModels<SearchViewModel>()
     private lateinit var adapter: RepoAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,7 +47,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    searchViewModel.search(newText ?: "")
+                    searchViewModel.uiAction(UiAction.Search(query = newText ?: ""))
 
                     return true
                 }
@@ -54,8 +62,22 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     private fun initRecyclerView() {
         adapter = RepoAdapter()
         binding.rvRepo.adapter = adapter
-        searchViewModel.repoList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchViewModel.pagingDataFlow.collectLatest {
+                    adapter.submitData(it)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                adapter.loadStateFlow.collect {
+                    val isListEmpty = it.refresh is LoadState.NotLoading && adapter.itemCount == 0
+                    binding.groupSearchInfo.isVisible = isListEmpty
+                }
+            }
         }
     }
 
