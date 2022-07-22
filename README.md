@@ -22,3 +22,5 @@
 #### 🍿 스크럼&회고록 일지
 [Notion 일지 기록](https://marmalade-centipede-c0d.notion.site/2-Github-2464d0fb9ffb4630b99f727fb222727d)
 
+#### 🌹 최종 발표자료
+[2w_repo_08.pdf](https://github.com/woowa-techcamp-2022/android-repo-08/files/9164070/2w_repo_08.pdf)
