@@ -22,7 +22,7 @@ data class UserResponse(
     @SerialName("following")
     val following: Int,
     @SerialName("location")
-    val location: String,
+    val location: String?,
     @SerialName("repos_url")
     val reposUrl: String,
     @SerialName("public_repos")
